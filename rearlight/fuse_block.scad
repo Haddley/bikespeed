@@ -3,10 +3,14 @@
 L = 105; W = 28; H = 8;
 // End shape: one long diagonal + one short steep chamfer; far end is the mirror image
 long_dx = 12.97; nose_out = 1.92; nose_y = 18.82; short_dx = 4.93;  // end shape fitted to a trace of the original (nose is nose_out beyond x=0)
-rim = 1.75; gutter = 2.25; inner_wall = 1.2; floor_t = 2; boss_top = 2;
-// rim+gutter = 4 mm: inner wall position unchanged, outer wall 0.25 mm thinner than before
-clip_edge = 2;  // clip recesses keep their original distance from the outer edge
-stud_d = 6.4; stud_inset = 14; hex_af = 8; hex_depth = 3; stud_boss_d = 14;
+rim = 1.2; gutter = 2.8; inner_wall = 1.2; floor_t = 2; boss_top = 2;
+// heights of the tops of the inner wall and screw pillars, measured from the open face (z=0): the mating part slips this far in
+wall_top = 4; screw_top = 4;
+// rim+gutter = 4 mm: inner wall unchanged; rim is 3 perimeters of a 0.4 mm nozzle (original design was rim = 2)
+// stud_inset = distance of each stud from its end (x=0 / x=L); larger moves it toward the screw holes (screws at screw_x = 27)
+stud_d = 6.4; stud_inset = 15.25; hex_af = 8; hex_depth = 3; stud_boss_d = 14;
+// stud_dy shifts the studs from the hole line toward the wide edge (keeps the stud bosses clear of the inner wall on the diagonal side)
+stud_dy = 1.5;
 screw_d = 4.0; screw_x = 27; screw_boss_d = 9;
 cs_d = 8; cs_depth = 4;  // countersink opening width and total depth from outside face
 cs_cone = (cs_d - screw_d)/2; // 90-degree cone height; straight bore of cs_d fills the rest of cs_depth
@@ -36,7 +40,7 @@ module outline() {
   n = len(pts);
   polygon([for (i = [0:n-1]) each arc_pts(pts[(i+n-1)%n], pts[i], pts[(i+1)%n], rs[i])]);
 }
-studs  = [[stud_inset, hole_y], [L-stud_inset, hole_y]];
+studs  = [[stud_inset, hole_y + stud_dy], [L-stud_inset, hole_y + stud_dy]];
 screws = [[screw_x, hole_y], [L-screw_x, hole_y]];
 
 module part() difference() {
@@ -46,11 +50,11 @@ module part() difference() {
       translate([0,0,-1]) linear_extrude(fz+1) offset(delta=-rim) outline();
     }
     // low inner wall (gutter lies between it and the rim)
-    translate([0,0,boss_top]) linear_extrude(fz-boss_top+0.01)
+    translate([0,0,wall_top]) linear_extrude(fz-wall_top+0.01)
       difference() { offset(delta=-(rim+gutter)) outline();
                      offset(delta=-(rim+gutter+inner_wall)) outline(); }
     for (p = studs)  translate([p[0],p[1],boss_top]) cylinder(d=stud_boss_d,h=fz-boss_top+0.01,$fn=48);
-    for (p = screws) translate([p[0],p[1],boss_top]) cylinder(d=screw_boss_d,h=fz-boss_top+0.01,$fn=48);
+    for (p = screws) translate([p[0],p[1],screw_top]) cylinder(d=screw_boss_d,h=fz-screw_top+0.01,$fn=48);
   }
   for (p = studs) {
     translate([p[0],p[1],boss_top-1]) cylinder(d=hex_af/cos(30),h=hex_depth+1,$fn=6);
@@ -63,7 +67,7 @@ module part() difference() {
     translate([p[0],p[1],H-cs_depth+cs_cone]) cylinder(d=cs_d,h=cs_depth-cs_cone+1,$fn=48);
   }
   translate([L/2,hole_y,-1]) cylinder(d=cable_d,h=H+2,$fn=48);
-  for (p = screws, y = [clip_edge, W-clip_edge-clip_w])
+  for (p = screws, y = [rim, W-rim-clip_w])
     translate([p[0]+(p[0]<L/2 ? clip_shift : -clip_shift)-clip_l/2,y,-1]) cube([clip_l,clip_w,H-clip_left+1]);
 }
 
