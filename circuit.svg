@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="Helvetica, Arial, sans-serif" font-size="12">
+  <rect width="900" height="480" fill="#ffffff"/>
+  <g stroke="#222" stroke-width="1.6" fill="none" stroke-linecap="round">
+
+    <!-- ===== Controller ===== -->
+    <rect x="30" y="70" width="140" height="340" rx="4" fill="#f4f6f8"/>
+    <!-- +5V rail -->
+    <path d="M70 90 H730"/>
+    <!-- GND rail -->
+    <path d="M170 380 H730"/>
+    <!-- internal brake pull-up -->
+    <path d="M70 90 V155"/>
+    <rect x="63" y="155" width="14" height="40" fill="#fff"/>
+    <path d="M70 195 V260 H170"/>
+    <!-- speed in -->
+    <path d="M170 210 H290"/>
+    <rect x="290" y="203" width="40" height="14" fill="#fff"/>
+    <path d="M330 210 H380"/>
+    <!-- brake line -->
+    <path d="M170 260 H290"/>
+    <rect x="290" y="253" width="40" height="14" fill="#fff"/>
+    <path d="M330 260 H380"/>
+    <!-- brake lever (existing, in parallel) -->
+    <path d="M230 260 V310 L246 338 M230 350 V380"/>
+    <circle cx="230" cy="350" r="3" fill="#222"/>
+
+    <!-- ===== ATtiny85 ===== -->
+    <rect x="380" y="135" width="120" height="200" rx="4" fill="#fff7e0"/>
+    <path d="M380 160 H366 M380 310 H350 V380"/>
+    <path d="M500 160 H530 V90"/>
+    <path d="M500 210 H640"/>
+
+    <!-- hall input network -->
+    <path d="M640 90 V120"/>
+    <rect x="633" y="120" width="14" height="40" fill="#fff"/>
+    <path d="M640 160 V210"/>
+    <path d="M640 210 H670"/>
+    <rect x="670" y="203" width="40" height="14" fill="#fff"/>
+    <path d="M710 210 H730"/>
+
+    <!-- decoupling caps to GND -->
+    <path d="M550 90 V125 M538 125 H562 M538 135 H562 M550 135 V170 M538 170 H562 M542 175 H558 M546 180 H554"/>
+    <path d="M600 90 V125 M588 125 H612 M588 135 H612 M600 135 V170 M588 170 H612 M592 175 H608 M596 180 H604"/>
+
+    <!-- ===== Motor ===== -->
+    <rect x="730" y="70" width="140" height="340" rx="4" fill="#f4f6f8"/>
+  </g>
+
+  <!-- junction dots -->
+  <g fill="#222">
+    <circle cx="230" cy="260" r="3.5"/>
+    <circle cx="350" cy="380" r="3.5"/>
+    <circle cx="530" cy="90" r="3.5"/>
+    <circle cx="640" cy="210" r="3.5"/>
+    <circle cx="550" cy="90" r="3.5"/>
+    <circle cx="600" cy="90" r="3.5"/>
+    <circle cx="640" cy="90" r="3.5"/>
+    <circle cx="70" cy="90" r="3.5"/>
+  </g>
+
+  <!-- labels -->
+  <g fill="#222">
+    <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold">hubspeed: ATtiny85 between hub motor and controller</text>
+
+    <text x="100" y="62" text-anchor="middle" font-weight="bold">Bike controller</text>
+    <text x="800" y="62" text-anchor="middle" font-weight="bold">Hub motor (hall connector)</text>
+
+    <text x="162" y="84" text-anchor="end">+5V</text>
+    <text x="162" y="204" text-anchor="end">Speed in</text>
+    <text x="162" y="254" text-anchor="end">Brake in</text>
+    <text x="162" y="374" text-anchor="end">GND</text>
+    <text x="80" y="180" font-size="10">pull-up</text>
+    <text x="80" y="193" font-size="10">~12.5k</text>
+    <text x="40" y="320" font-size="10">Commutation inputs</text>
+    <text x="40" y="334" font-size="10">(green/yellow/blue)</text>
+    <text x="40" y="348" font-size="10">go direct to motor,</text>
+    <text x="40" y="362" font-size="10">not through ATtiny</text>
+
+    <text x="740" y="84">Red +5V</text>
+    <text x="740" y="204">White (speed)</text>
+    <text x="740" y="374">Black GND</text>
+    <text x="740" y="270" font-size="10">Green / Yellow / Blue:</text>
+    <text x="740" y="284" font-size="10">do not touch</text>
+
+    <text x="310" y="196" text-anchor="middle" font-size="10">220 Ω</text>
+    <text x="310" y="246" text-anchor="middle" font-size="10">220 Ω</text>
+    <text x="690" y="196" text-anchor="middle" font-size="10">1 kΩ</text>
+    <text x="654" y="144" font-size="10">4.7 kΩ</text>
+    <text x="550" y="199" text-anchor="middle" font-size="10">100 nF</text>
+    <text x="600" y="199" text-anchor="middle" font-size="10">10 µF</text>
+    <text x="256" y="333" font-size="10">brake lever switch</text>
+    <text x="256" y="346" font-size="10">(closed = brake)</text>
+    <text x="360" y="372" text-anchor="end" font-size="10">GND</text>
+
+    <text x="440" y="187" text-anchor="middle" font-weight="bold" font-size="14">ATtiny85</text>
+    <text x="440" y="238" text-anchor="middle" font-size="10">1 MHz internal</text>
+    <text x="388" y="164">1 RESET</text>
+    <text x="388" y="214">2 PB3</text>
+    <text x="388" y="264">3 PB4</text>
+    <text x="388" y="314">4 GND</text>
+    <text x="492" y="164" text-anchor="end">Vcc 8</text>
+    <text x="492" y="214" text-anchor="end">PB2 7</text>
+    <text x="492" y="264" text-anchor="end" fill="#888">6 NC</text>
+    <text x="492" y="314" text-anchor="end" fill="#888">5 NC</text>
+    <text x="364" y="152" text-anchor="end" font-size="10" fill="#888">NC</text>
+
+    <text x="30" y="440" font-size="11">PB3 mirrors the white wire up to 25 km/h and runs at 2x above it (display only).</text>
+    <text x="30" y="456" font-size="11">PB4 is an output driven LOW above 25 km/h and high-Z below 24 km/h. It never drives HIGH, so the lever and PB4 act as a wired-OR.</text>
+    <text x="30" y="472" font-size="11">All GND symbols and the bottom rail are one common ground. Caps sit right at pins 8 and 4.</text>
+  </g>
+</svg>

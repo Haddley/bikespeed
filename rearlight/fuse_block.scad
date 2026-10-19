@@ -1,5 +1,5 @@
 // Copy of black fuse/stud block half. 105 x 26 x 8 mm.
-// Open tray: inside face open at z=0 (rim + gutter + bosses), flat outside face at z=H.
+// Open tray: inside face open at z=0 in part() (rim + gutter + bosses), flat outside face at z=H.
 L = 105; W = 26; H = 8;
 // End shape: one long diagonal + one short steep chamfer; far end is the mirror image
 long_dx = 12; long_dy = 18; short_dx = 6; short_dy = 2.5;
@@ -8,7 +8,6 @@ stud_d = 6.4; stud_inset = 14; hex_af = 9; hex_depth = 3; stud_boss_d = 14;
 screw_d = 4.5; screw_x = 27; screw_boss_d = 9;
 clip_l = 14; clip_w = 4; clip_left = 1; // 4 blind clip recesses beside the screw holes
 cable_d = 5;
-slot_l = 30; slot_w = 4; slot_wall = 2;
 
 fz = H - floor_t;
 module outline() {
@@ -19,7 +18,7 @@ module outline() {
 studs  = [[stud_inset, W/2], [L-stud_inset, W/2]];
 screws = [[screw_x, W/2], [L-screw_x, W/2]];
 
-difference() {
+module part() difference() {
   union() {
     difference() {
       linear_extrude(H) outline();
@@ -40,6 +39,7 @@ difference() {
   translate([L/2,W/2,-1]) cylinder(d=cable_d,h=H+2,$fn=48);
   for (p = screws, y = [rim, W-rim-clip_w])
     translate([p[0]-clip_l/2,y,-1]) cube([clip_l,clip_w,H-clip_left+1]);
-  for (y = [slot_wall, W-slot_wall-slot_w])
-    translate([L/2-slot_l/2,y,-1]) cube([slot_l,slot_w,H+2]);
 }
+
+// Flipped for printing: flat outside face on the bed, open tray facing up.
+translate([0,W,H]) rotate([180,0,0]) part();

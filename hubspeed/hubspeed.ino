@@ -7,8 +7,26 @@
 //  Behaviour:
 //    input speed <= 25 km/h  ->  output mirrors input 1:1
 //    input speed >  25 km/h  ->  output runs at 2× input rate
+//    input speed >  25 km/h  ->  brake-cutoff line pulled LOW
+//                                (controller cuts motor power)
 //
 //  Hysteresis: 1 km/h, so it doesn't chatter at the threshold.
+//
+//  NOTE: the white-wire doubling only changes what the DISPLAY
+//  shows. The controller derives its own speed from the
+//  commutation halls, so it ignores the doubled signal. The
+//  brake-cutoff output is what actually stops the motor.
+//
+//  ── Brake-cutoff line (PB4, physical pin 3) ─────────────
+//    Measured on the bike: ~5 V open circuit, 0.4 mA short
+//    circuit -> controller pull-up (~12.5 kΩ), active LOW.
+//    Wiring (no transistor needed at 0.4 mA):
+//       brake sensor wire that reads 5 V (red) ──[220 Ω]── PB4
+//       brake sensor wire that reads 0 V (black) ───────── GND
+//    Both brake-lever wires go to the controller side of the
+//    cut; the lever itself may stay connected in parallel.
+//    Cutoff: PB4 = output LOW. Released: PB4 = input, high-Z.
+//    (The pin never drives HIGH, so it can't fight the lever.)
 //
 // ============================================================
 //  HARDWARE SETUP
@@ -142,7 +160,7 @@
 // ============================================================
 //    Pin 1  PB5 / RESET   unused
 //    Pin 2  PB3           OUTPUT  -> controller-side white wire
-//    Pin 3  PB4           unused
+//    Pin 3  PB4           OUTPUT  -> brake-cutoff line (open-drain style)
 //    Pin 4  GND           -> hub connector thin BLACK
 //    Pin 5  PB0           unused
 //    Pin 6  PB1           unused
@@ -155,12 +173,14 @@
 
 #define OUT_PIN      3       // PB3, physical pin 2
 #define HALL_IN_PIN  2       // PB2, physical pin 7
+#define BRAKE_PIN    4       // PB4, physical pin 3 (active LOW, open-drain style)
 
 // ---- Wheel / sensor ----
 const float WHEEL_CIRCUMFERENCE_M = 29.0f * 0.0254f * PI;  // ~2.314 m
 const int   PULSES_PER_REV        = 6;                     // 6-magnet ring
 const float SPEED_WARN_KMH        = 25.0f;
 const float SPEED_HYST_KMH        = 1.0f;
+const float SPEED_CUTOFF_KMH      = 25.0f;   // above this, cut motor power
 
 // ---- Sanity limits ----
 const uint32_t MIN_INPUT_PERIOD_US = 1000;      // reject very fast glitches
@@ -213,9 +233,17 @@ ISR(PCINT0_vect)
   }
 }
 
+// Brake-cutoff: LOW output to assert, high-Z to release
+#define BRAKE_CUT_ON()  (DDRB |=  (1 << BRAKE_PIN))  // output, PORTB bit 0 -> pulls LOW
+#define BRAKE_CUT_OFF() (DDRB &= ~(1 << BRAKE_PIN))  // input, line floats to controller's 5 V
+
+bool cutting = false;
+
 // ---------------- setup ----------------
 void setup()
 {
+  PORTB &= ~(1 << BRAKE_PIN);      // latch LOW; only DDRB toggles it
+  BRAKE_CUT_OFF();
   pinMode(HALL_IN_PIN, INPUT);     // external 4.7k pull-up fitted
   pinMode(OUT_PIN, OUTPUT);
   digitalWrite(OUT_PIN, HIGH);     // idle high, hall-style
@@ -250,6 +278,14 @@ void loop()
         doubling = false;
       }
 
+      // Brake-cutoff decision with hysteresis
+      if (!cutting && speed_kmh > SPEED_CUTOFF_KMH) {
+        cutting = true;
+      } else if (cutting && speed_kmh < SPEED_CUTOFF_KMH - SPEED_HYST_KMH) {
+        cutting = false;
+      }
+      if (cutting) BRAKE_CUT_ON(); else BRAKE_CUT_OFF();
+
       // Compute output timing
       if (doubling) {
         outPeriodUs = p / 2;      // 2× frequency -> half the period
@@ -277,6 +313,8 @@ void loop()
   // ---- Idle: no input activity ----
   if (millis() - lastMeasMs > STALE_MS) {
     doubling = false;
+    cutting  = false;
+    BRAKE_CUT_OFF();
     digitalWrite(OUT_PIN, HIGH);
     return;
   }
