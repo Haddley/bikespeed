@@ -1,334 +1,172 @@
 // ============================================================
-//  ATtiny85 — Hub-motor speed signal, mirror + 2× over 25 km/h
+//  ATtiny85 — e-bike speed limiter, through the brake sensor line
 //
-//  Reads the white hall wire (motor side) on PB2.
-//  Drives the white wire (controller side) on PB3.
+//  VERSION 1.0 — RELEASED, WORKING VERSION
+//  This is the released, working version of the hubspeed code. It
+//  limits the bike to 25 km/h (release below 24 km/h), 678 bytes
+//  built with hubspeed/build_and_flash.sh. Flash it with
+//  ./build_and_flash.sh flash. Do not build it as a plain .ino
+//  (see build_and_flash.sh for why).
+//
+//  The motor's white speed wire and the controller's white wire
+//  are joined together, so the speed signal reaches the controller
+//  and the display exactly as it did before. The ATtiny only LISTENS
+//  to that wire on PB2, and when the bike is faster than the limit it
+//  pulls the brake sensor line LOW on PB4, as if the brake had been
+//  pressed. The controller then cuts power to the motor.
 //
 //  Behaviour:
-//    input speed <= 25 km/h  ->  output mirrors input 1:1
-//    input speed >  25 km/h  ->  output runs at 2× input rate
-//    input speed >  25 km/h  ->  brake-cutoff line pulled LOW
-//                                (controller cuts motor power)
+//    3 wheel pulses in a row faster than 25 km/h -> brake line pulled LOW
+//                                                   (motor cut)
+//    a wheel pulse slower than 24 km/h           -> brake line released
+//                                                   (motor runs)
+//    no wheel pulses for 1 s                     -> brake line released
 //
-//  Hysteresis: 1 km/h, so it doesn't chatter at the threshold.
+//  The 1 km/h gap between 25 and 24 stops it chattering at the limit.
 //
-//  NOTE: the white-wire doubling only changes what the DISPLAY
-//  shows. The controller derives its own speed from the
-//  commutation halls, so it ignores the doubled signal. The
-//  brake-cutoff output is what actually stops the motor.
+//  Noise: at high motor power the speed wire picks up spikes. A real
+//  wheel pulse is LOW for several milliseconds, so anything LOW for
+//  less than 1.5 ms is ignored, and the brake is only applied after 3
+//  fast pulses in a row, so one stray pulse cannot trigger it.
 //
-//  ── Brake-cutoff line (PB4, physical pin 3) ─────────────
-//    Measured on the bike: ~5 V open circuit, 0.4 mA short
-//    circuit -> controller pull-up (~12.5 kΩ), active LOW.
-//    Wiring (no transistor needed at 0.4 mA):
-//       brake sensor wire that reads 5 V (red) ──[220 Ω]── PB4
-//       brake sensor wire that reads 0 V (black) ───────── GND
-//    Both brake-lever wires go to the controller side of the
-//    cut; the lever itself may stay connected in parallel.
-//    Cutoff: PB4 = output LOW. Released: PB4 = input, high-Z.
-//    (The pin never drives HIGH, so it can't fight the lever.)
+//  If the ATtiny fails or loses power, the brake line is released and
+//  the speed wire is still joined: the bike behaves as it did before.
 //
 // ============================================================
-//  HARDWARE SETUP
+//  WIRING
 // ============================================================
 //
-//  ── Hub motor hall connector ────────────────────────────
-//    Thin RED    = +5V  (from controller)   ──┐
-//    Thin BLACK  = GND  (from controller)   ──┤  power source
-//    Thin GREEN  = commutation hall U       ──┤  for the ATtiny
-//    Thin YELLOW = commutation hall V       ──┤
-//    Thin BLUE   = commutation hall W       ──┤
-//    Thin WHITE  = speed signal             ──┘  <-- CUT THIS
+//  Speed wire (the white wire in the hub motor's hall connector):
+//    Join the motor-side half and the controller-side half together.
+//    Tap the joined wire to PB2 (pin 7) through a 1 kΩ resistor.
+//    Optional: a 100 nF capacitor from PB2 to GND. With the 1 kΩ it
+//    filters short noise spikes before they reach the chip.
+//    The controller's own pull-up holds the wire HIGH; each magnet
+//    passing the hall sensor pulls it LOW (about 6 pulses per wheel
+//    turn, idle HIGH, about 18 % LOW).
 //
-//    NOTE: the RED and BLACK wires on the hall connector are
-//    simply the controller's +5V and GND rails carried down
-//    the motor cable. Tapping them here is electrically the
-//    same as tapping the controller's 5V harness directly —
-//    it's still the controller's regulator feeding us.
+//  Brake sensor line (measured: about 5 V open circuit, 0.4 mA short
+//  circuit, so the controller pulls it up through about 12.5 kΩ and
+//  the brake lever pulls it to ground):
+//    brake wire that reads 5 V ──[220 Ω]── PB4 (pin 3)
+//    brake wire that reads 0 V ─────────── GND (pin 4)
+//    Leave the brake lever connected: the lever and the ATtiny are
+//    two switches on the same line, so either one applies the brake.
+//    Cutoff: PB4 = output LOW. Released: PB4 = input, high-Z. The pin
+//    never drives HIGH, so it cannot fight the lever.
 //
-//    The white speed wire carries ~6 pulses per wheel
-//    revolution (6-magnet ring), ~18 % duty, idle HIGH,
-//    LOW when a magnet passes.
+//  Power (the hub connector's thin RED and BLACK wires are the
+//  controller's own +5 V and GND):
+//    Pin 8 (Vcc) ── RED  (+5 V)
+//    Pin 4 (GND) ── BLACK
+//    100 nF ceramic and 10 µF capacitors across pin 8 / pin 4, right
+//    at the chip. Motor PWM puts ripple on the 5 V rail.
 //
-//  ── Current budget (why this is OK) ─────────────────────
-//    Controller 5V rails are typically rated 100-500 mA and
-//    are already powering the three commutation halls
-//    (~10 mA total) plus the speed hall (~5 mA).
-//    ATtiny85 @ 1 MHz draws ~1-2 mA when running.
-//    Adding 10 mA is trivial unless the rail is already
-//    loaded near its limit by a throttle, display, etc.
+//  Do NOT touch the green, yellow and blue commutation hall wires.
 //
-//    If in doubt, measure current on the red wire before
-//    and after — you should see a bump of <10 mA.
-//
-//    Do NOT try to power the ATtiny from the WHITE wire.
-//    That wire is a signal, not a supply.
-//
-//  ── Cut the white wire into two halves ──────────────────
-//    Motor side  = hall sensor output (idles HIGH via the
-//                  controller's original pull-up; pulls LOW
-//                  when a magnet passes)
-//    Ctrl side   = controller's speed input (has its own
-//                  internal pull-up)
-//
-//  ── Wiring after the cut ────────────────────────────────
-//
-//     Motor side of white wire
-//          │
-//         [1 kΩ]        series protection
-//          │
-//          ├──────────────── PB2 (pin 7)   hall input
-//          │
-//         [4.7 kΩ]      pull-up to 5V
-//          │
-//          └── +5V  ── tapped from the hub connector's
-//                     thin RED wire (same node that feeds
-//                     the hall sensor's own supply)
-//
-//     Controller side of white wire
-//          │
-//         [220 Ω]        series protection
-//          │
-//          └──────────────── PB3 (pin 2)   output (mirror or 2×)
-//
-//  ── ATtiny85 power ──────────────────────────────────────
-//     Pin 8 (Vcc)  ── hub connector thin RED  (+5V)
-//     Pin 4 (GND)  ── hub connector thin BLACK (GND)
-//     Pin 1 (RESET) ─ leave floating (or 10 kΩ to Vcc)
-//
-//     Decoupling, soldered right at the chip:
-//       100 nF ceramic       across pin 8 / pin 4
-//       10 µF electrolytic   across pin 8 / pin 4
-//
-//     The 10 µF matters more than usual here because motor
-//     PWM switching injects ripple onto the 5V rail.
-//     Keep the wires short and route them away from the
-//     three thick phase wires if possible.
-//
-//  ── Do NOT touch ─────────────────────────────────────────
-//     Green / Yellow / Blue commutation hall wires
-//     (used by the controller for motor commutation —
-//      interfering with them will damage the controller
-//      or cause the motor to stutter)
-//
-//  ── Bill of materials ────────────────────────────────────
-//     1x ATtiny85 (DIP-8, internal 1 MHz, factory fuses)
-//     1x 4.7 kΩ resistor   (hall pull-up)
-//     1x 1 kΩ   resistor   (hall input series)
-//     1x 220 Ω  resistor   (output series)
-//     1x 100 nF ceramic cap
-//     1x 10 µF electrolytic cap
-//     1x small piece of perfboard
-//
-//  ── Bench check before riding ───────────────────────────
-//     1. Bike on stand, wheel off the ground, power on.
-//     2. Scope / fast meter on motor-side white wire —
-//        clean 0/5 V square wave as the wheel spins.
-//     3. Same on controller-side white wire —
-//        mirrors below 25 km/h, doubles above.
-//     4. Throttle up. Bike should hit its speed cap
-//        earlier than usual (~2× earlier), confirming the
-//        doubling is working.
-//     5. Verify the ATtiny's 5V rail (pin 8) stays steady
-//        while the motor is running. If it dips by more
-//        than ~100 mV, add another 100 nF locally or use
-//        a small LC filter (10 µH + 10 µF) inline on the
-//        RED wire feeding the ATtiny.
-//
-//  ── Bench test with the Arduino Uno simulator ───────────
-//     Uno pin 3 (SIM out) ──[1 kΩ]──┬── ATtiny PB2 (pin 7)
-//                                   │
-//                                  [4.7 kΩ]
-//                                   │
-//                                  +5V (shared)
-//
-//     Uno GND ──────────────────────┴── ATtiny GND (pin 4)
-//     Uno 5V  ────────────────────────── ATtiny Vcc (pin 8)
-//                                        (with 100nF + 10µF)
-//
-//     Simulator settings: MAGNETS = 6, DUTY_CYCLE = 0.18.
-//
-//     Set SPEED_KMH to each value and watch PB3 on a scope:
-//       5  -> mirror  (278 ms period, 50.0 ms pulse)
-//       20 -> mirror  (69 ms period,  12.5 ms pulse)
-//       25 -> mirror  (56 ms period,  10.0 ms pulse) [threshold]
-//       27 -> double  (26 ms period,  4.6 ms pulse)
-//       30 -> double  (23 ms period,  4.15 ms pulse)
+//  Parts: ATtiny85 (internal 1 MHz, factory fuses), 1 kΩ, 220 Ω,
+//  100 nF ceramic and 10 µF capacitors for the supply, and the
+//  optional 100 nF ceramic on PB2.
 //
 // ============================================================
-//  PIN MAP (ATTinyCore, ATtiny85 @ 1 MHz internal)
+//  BENCH CHECK (wheel off the ground)
+// ============================================================
+//    Spin the wheel past the limit: the brake line reads about 0 V and
+//    the motor cuts. Slow below the release speed: it reads about 5 V and the
+//    motor runs again.
+//
+// ============================================================
+//  PIN MAP
 // ============================================================
 //    Pin 1  PB5 / RESET   unused
-//    Pin 2  PB3           OUTPUT  -> controller-side white wire
-//    Pin 3  PB4           OUTPUT  -> brake-cutoff line (open-drain style)
-//    Pin 4  GND           -> hub connector thin BLACK
+//    Pin 2  PB3           unused
+//    Pin 3  PB4           OUTPUT  -> brake sensor line (via 220 Ω)
+//    Pin 4  GND
 //    Pin 5  PB0           unused
 //    Pin 6  PB1           unused
-//    Pin 7  PB2 / A1      INPUT   <- motor-side white wire
-//    Pin 8  Vcc           -> hub connector thin RED
+//    Pin 7  PB2           INPUT   <- speed wire (via 1 kΩ)
+//    Pin 8  Vcc
 //
 // ============================================================
 
 #include <avr/interrupt.h>
 
-#define OUT_PIN      3       // PB3, physical pin 2
 #define HALL_IN_PIN  2       // PB2, physical pin 7
-#define BRAKE_PIN    4       // PB4, physical pin 3 (active LOW, open-drain style)
+#define BRAKE_PIN    4       // PB4, physical pin 3
 
-// ---- Wheel / sensor ----
-const float WHEEL_CIRCUMFERENCE_M = 29.0f * 0.0254f * PI;  // ~2.314 m
-const int   PULSES_PER_REV        = 6;                     // 6-magnet ring
-const float SPEED_WARN_KMH        = 25.0f;
-const float SPEED_HYST_KMH        = 1.0f;
-const float SPEED_CUTOFF_KMH      = 25.0f;   // above this, cut motor power
+// Output register bit stays 0, so switching the pin to an output pulls
+// the brake line LOW, and switching it to an input lets it go.
+#define BRAKE_ON()   (DDRB |=  (1 << BRAKE_PIN))
+#define BRAKE_OFF()  (DDRB &= ~(1 << BRAKE_PIN))
 
-// ---- Sanity limits ----
-const uint32_t MIN_INPUT_PERIOD_US = 1000;      // reject very fast glitches
-const uint32_t MAX_INPUT_PERIOD_US = 1000000;   // >1 s period = stopped
-const uint32_t MIN_OUT_PULSE_US    = 500;       // never shorter than this
-const uint32_t MIN_OUT_PERIOD_US   = 1000;      // never faster than 1 kHz
-const unsigned long STALE_MS       = 1000;      // no measurement = idle
+// Time between wheel pulses at a given speed
+// (29 inch wheel, 2.314 m round, 6 magnets, so 6 pulses per turn):
+//   25 km/h -> a pulse every 55 538 µs
+//   24 km/h -> a pulse every 57 852 µs
+const uint32_t CUT_PERIOD_US     = 55538UL;   // shorter than this: faster than 25 km/h
+const uint32_t RELEASE_PERIOD_US = 57852UL;   // longer than this: slower than 24 km/h
+const uint32_t MIN_PERIOD_US     = 10000UL;   // closer together than this is noise, not a wheel
+const uint32_t STOPPED_US        = 1000000UL; // no pulse for this long: the wheel has stopped
+const uint32_t MIN_LOW_US        = 1500UL;    // a real pulse is LOW for longer than this
+const uint8_t  FAST_PULSES       = 3;         // fast pulses in a row before the brake is applied
 
-// ---- ISR-shared state ----
-volatile uint32_t tFallUs  = 0;     // timestamp of last falling edge
-volatile uint32_t periodUs = 0;     // fall-to-fall period
-volatile uint32_t lowUs    = 0;     // LOW pulse width (fall-to-rise)
-volatile bool     newMeas  = false; // set by ISR, cleared by loop
-volatile bool     doubling = false; // read by ISR (affects mirroring)
-
-// ---- Loop-only state ----
-uint32_t      outPeriodUs = 0;
-uint32_t      outPulseUs  = 0;
-uint32_t      tOutLastUs  = 0;
-unsigned long lastMeasMs  = 0;
+volatile uint32_t lastFallUs = 0;   // start of the last accepted wheel pulse
+uint32_t fallUs    = 0;             // start of the pulse being measured (interrupt only)
+uint8_t  fastCount = 0;             // fast pulses in a row (interrupt only)
 
 // ------------------------------------------------------------
-//  Pin-change ISR
-//    - measures input period and pulse width
-//    - mirrors input level onto output when NOT in doubling mode
+//  Pin-change interrupt on the speed wire
+//    falling edge: a magnet may be passing the hall sensor
+//    rising edge:  the pulse has ended, so decide whether it was real
 // ------------------------------------------------------------
 ISR(PCINT0_vect)
 {
-  uint32_t now  = micros();
-  bool     high = (PINB & (1 << HALL_IN_PIN)) != 0;
+  uint32_t now = micros();
 
-  if (high) {
-    // Rising edge — capture LOW pulse width
-    if (tFallUs != 0) {
-      lowUs = now - tFallUs;
-    }
-  } else {
-    // Falling edge — capture period, flag new measurement
-    if (tFallUs != 0) {
-      periodUs = now - tFallUs;
-      newMeas  = true;
-    }
-    tFallUs = now;
-  }
-
-  // Mirror mode: copy input level straight to output
-  if (!doubling) {
-    if (high) PORTB |=  (1 << OUT_PIN);
-    else      PORTB &= ~(1 << OUT_PIN);
-  }
-}
-
-// Brake-cutoff: LOW output to assert, high-Z to release
-#define BRAKE_CUT_ON()  (DDRB |=  (1 << BRAKE_PIN))  // output, PORTB bit 0 -> pulls LOW
-#define BRAKE_CUT_OFF() (DDRB &= ~(1 << BRAKE_PIN))  // input, line floats to controller's 5 V
-
-bool cutting = false;
-
-// ---------------- setup ----------------
-void setup()
-{
-  PORTB &= ~(1 << BRAKE_PIN);      // latch LOW; only DDRB toggles it
-  BRAKE_CUT_OFF();
-  pinMode(HALL_IN_PIN, INPUT);     // external 4.7k pull-up fitted
-  pinMode(OUT_PIN, OUTPUT);
-  digitalWrite(OUT_PIN, HIGH);     // idle high, hall-style
-
-  PCMSK |= (1 << HALL_IN_PIN);     // unmask PCINT on PB2
-  GIMSK |= (1 << PCIE);            // enable pin-change group
-  sei();
-}
-
-// ---------------- main loop ----------------
-void loop()
-{
-  // ---- Process any new measurement ----
-  if (newMeas) {
-    newMeas = false;
-
-    uint32_t p = periodUs;
-    uint32_t w = lowUs;
-
-    if (p >= MIN_INPUT_PERIOD_US && p <= MAX_INPUT_PERIOD_US && w < p) {
-      lastMeasMs = millis();
-
-      // Speed: one wheel revolution = p * PULSES_PER_REV microseconds
-      float revTimeSec = (p / 1e6f) * (float)PULSES_PER_REV;
-      float speed_kmh  = (WHEEL_CIRCUMFERENCE_M / revTimeSec) * 3.6f;
-
-      // Doubling decision with hysteresis
-      bool wasDbl = doubling;
-      if (!doubling && speed_kmh > SPEED_WARN_KMH) {
-        doubling = true;
-      } else if (doubling && speed_kmh < SPEED_WARN_KMH - SPEED_HYST_KMH) {
-        doubling = false;
-      }
-
-      // Brake-cutoff decision with hysteresis
-      if (!cutting && speed_kmh > SPEED_CUTOFF_KMH) {
-        cutting = true;
-      } else if (cutting && speed_kmh < SPEED_CUTOFF_KMH - SPEED_HYST_KMH) {
-        cutting = false;
-      }
-      if (cutting) BRAKE_CUT_ON(); else BRAKE_CUT_OFF();
-
-      // Compute output timing
-      if (doubling) {
-        outPeriodUs = p / 2;      // 2× frequency -> half the period
-        outPulseUs  = w / 2;      // preserve duty cycle
-      } else {
-        outPeriodUs = p;
-        outPulseUs  = w;
-      }
-      if (outPeriodUs < MIN_OUT_PERIOD_US) outPeriodUs = MIN_OUT_PERIOD_US;
-      if (outPulseUs  < MIN_OUT_PULSE_US)  outPulseUs  = MIN_OUT_PULSE_US;
-      if (outPulseUs  >= outPeriodUs)      outPulseUs  = outPeriodUs / 2;
-
-      // ---- Transitions ----
-      if (doubling && !wasDbl) {
-        // Just entered doubling: sync the output scheduler
-        tOutLastUs = micros();
-      }
-      if (!doubling && wasDbl) {
-        // Just exited doubling: snap output to input level
-        digitalWrite(OUT_PIN, digitalRead(HALL_IN_PIN));
-      }
-    }
-  }
-
-  // ---- Idle: no input activity ----
-  if (millis() - lastMeasMs > STALE_MS) {
-    doubling = false;
-    cutting  = false;
-    BRAKE_CUT_OFF();
-    digitalWrite(OUT_PIN, HIGH);
+  if ((PINB & (1 << HALL_IN_PIN)) == 0) {      // line went LOW
+    fallUs = now;
     return;
   }
 
-  // ---- Doubling: generate synthetic pulse train ----
-  if (doubling) {
-    uint32_t nowUs = micros();
-    if ((uint32_t)(nowUs - tOutLastUs) >= outPeriodUs) {
-      tOutLastUs += outPeriodUs;
-      digitalWrite(OUT_PIN, LOW);
-      delayMicroseconds(outPulseUs);
-      digitalWrite(OUT_PIN, HIGH);
-    }
+  // The line went HIGH: the pulse has ended
+  if (now - fallUs < MIN_LOW_US) return;       // LOW for too short a time: noise
+
+  uint32_t period = fallUs - lastFallUs;
+  if (period < MIN_PERIOD_US) return;          // too soon after the last pulse: noise
+  lastFallUs = fallUs;
+
+  if (period > STOPPED_US) {                   // first pulse after the wheel was stopped
+    fastCount = 0;
+    return;
   }
 
-  // ---- Mirror mode: ISR already handles output, nothing to do here ----
+  if (period < CUT_PERIOD_US) {
+    if (++fastCount >= FAST_PULSES) BRAKE_ON();
+  } else {
+    fastCount = 0;
+    if (period > RELEASE_PERIOD_US) BRAKE_OFF();
+  }
+}
+
+void setup()
+{
+  // The controller holds the wire HIGH; the internal pull-up only keeps
+  // the pin quiet if the tap wire ever comes loose.
+  pinMode(HALL_IN_PIN, INPUT_PULLUP);
+
+  PORTB &= ~(1 << BRAKE_PIN);      // latch LOW; only DDRB changes
+  BRAKE_OFF();
+
+  PCMSK |= (1 << HALL_IN_PIN);     // pin-change interrupt on PB2 only
+  GIMSK |= (1 << PCIE);
+  sei();
+}
+
+void loop()
+{
+  // No wheel pulses for a second: the bike has stopped, let go of the brake line
+  noInterrupts();
+  uint32_t last = lastFallUs;
+  interrupts();
+  if ((uint32_t)(micros() - last) > STOPPED_US) BRAKE_OFF();
 }

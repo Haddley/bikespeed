@@ -1,5 +1,5 @@
 
-/Users/neilhaddley/Library/Caches/arduino/sketches/7B5190E6CEE3ADFA42DED7AAE1D82F44/hubspeed.ino.elf:     file format elf32-avr
+/Users/neilhaddley/Library/Caches/arduino/sketches/81398EE9FB50196C0D00B9F6331A37B6/hubspeed.ino.elf:     file format elf32-avr
 
 
 Disassembly of section .text:
@@ -8,10 +8,10 @@ Disassembly of section .text:
 __vectors():
    0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
    2:	1d c0       	rjmp	.+58     	; 0x3e <__bad_interrupt>
-   4:	56 c2       	rjmp	.+1196   	; 0x4b2 <__vector_2>
+   4:	43 c0       	rjmp	.+134    	; 0x8c <__vector_2>
    6:	1b c0       	rjmp	.+54     	; 0x3e <__bad_interrupt>
    8:	1a c0       	rjmp	.+52     	; 0x3e <__bad_interrupt>
-   a:	d7 c2       	rjmp	.+1454   	; 0x5ba <__vector_5>
+   a:	d1 c0       	rjmp	.+418    	; 0x1ae <__vector_5>
    c:	18 c0       	rjmp	.+48     	; 0x3e <__bad_interrupt>
    e:	17 c0       	rjmp	.+46     	; 0x3e <__bad_interrupt>
   10:	16 c0       	rjmp	.+44     	; 0x3e <__bad_interrupt>
@@ -59,7 +59,7 @@ __trampolines_start():
 00000034 <.Loc.5>:
 .do_clear_bss_start():
 /private/tmp/s-jKYmLdou/avr-gccA14-20261009-25746-eks7k9/gcc-14.3.0/build/avr/avr25/libgcc/../../../../libgcc/config/avr/lib1funcs.S:2449
-  34:	a8 38       	cpi	r26, 0x88	; 136
+  34:	a2 37       	cpi	r26, 0x72	; 114
 
 00000036 <.Loc.6>:
 .Loc.6():
@@ -73,8 +73,8 @@ __trampolines_start():
 
 0000003a <L0^A>:
 L0^A():
-  3a:	07 d3       	rcall	.+1550   	; 0x64a <main>
-  3c:	a6 c4       	rjmp	.+2380   	; 0x98a <_exit>
+  3a:	01 d1       	rcall	.+514    	; 0x23e <main>
+  3c:	32 c1       	rjmp	.+612    	; 0x2a2 <_exit>
 
 0000003e <__bad_interrupt>:
 __vector_1():
@@ -193,1290 +193,339 @@ micros():
   }
   8a:	08 95       	ret
 
-0000008c <digitalWrite.constprop.0>:
-digitalWrite():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:152
-  // before doing a digital write.
-  if (timer != NOT_ON_TIMER) turnOffPWM(timer);
-
-  out = portOutputRegister(port);
-
-  if (val == LOW) {
-  8c:	81 11       	cpse	r24, r1
-  8e:	05 c0       	rjmp	.+10     	; 0x9a <.L10>
-
-00000090 <.LBB24>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:153
-    uint8_t oldSREG = SREG;
-  90:	8f b7       	in	r24, 0x3f	; 63
-
-00000092 <.LVL6>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:154
-    cli();
-  92:	f8 94       	cli
-
-00000094 <.Loc.25>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:155
-    *out &= ~bit;
-  94:	c3 98       	cbi	0x18, 3	; 24
-
-00000096 <.L12>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:161
-    SREG = oldSREG;
-  } else {
-    uint8_t oldSREG = SREG;
-    cli();
-    *out |= bit;
-    SREG = oldSREG;
-  96:	8f bf       	out	0x3f, r24	; 63
-
-00000098 <.Loc.28>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:163
-  }
-}
-  98:	08 95       	ret
-
-0000009a <.L10>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:158
-    uint8_t oldSREG = SREG;
-  9a:	8f b7       	in	r24, 0x3f	; 63
-
-0000009c <.LVL9>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:159
-    cli();
-  9c:	f8 94       	cli
-
-0000009e <.Loc.31>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:160
-    *out |= bit;
-  9e:	c3 9a       	sbi	0x18, 3	; 24
-  a0:	fa cf       	rjmp	.-12     	; 0x96 <.L12>
-
-000000a2 <setup>:
-setup():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:245
-bool cutting = false;
-
-// ---------------- setup ----------------
-void setup()
-{
-  PORTB &= ~(1 << BRAKE_PIN);      // latch LOW; only DDRB toggles it
-  a2:	c4 98       	cbi	0x18, 4	; 24
-
-000000a4 <.Loc.35>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:246
-  BRAKE_CUT_OFF();
-  a4:	bc 98       	cbi	0x17, 4	; 23
-
-000000a6 <.LBB53>:
-pinMode():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:45
-    uint8_t oldSREG = SREG;
-  a6:	8f b7       	in	r24, 0x3f	; 63
-
-000000a8 <.LVL11>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:46
-                cli();
-  a8:	f8 94       	cli
-
-000000aa <.Loc.57>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:47
-    *reg &= ~bit;
-  aa:	ba 98       	cbi	0x17, 2	; 23
-
-000000ac <.Loc.59>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:48
-    *out &= ~bit;
-  ac:	c2 98       	cbi	0x18, 2	; 24
-
-000000ae <.Loc.61>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:49
-    SREG = oldSREG;
-  ae:	8f bf       	out	0x3f, r24	; 63
-
-000000b0 <.LBB60>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:57
-    uint8_t oldSREG = SREG;
-  b0:	8f b7       	in	r24, 0x3f	; 63
-
-000000b2 <.LVL13>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:58
-                cli();
-  b2:	f8 94       	cli
-
-000000b4 <.Loc.86>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:59
-    *reg |= bit;
-  b4:	bb 9a       	sbi	0x17, 3	; 23
-
-000000b6 <.Loc.88>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:60
-    SREG = oldSREG;
-  b6:	8f bf       	out	0x3f, r24	; 63
-
-000000b8 <.LBE60>:
-setup():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:249
-  pinMode(HALL_IN_PIN, INPUT);     // external 4.7k pull-up fitted
-  pinMode(OUT_PIN, OUTPUT);
-  digitalWrite(OUT_PIN, HIGH);     // idle high, hall-style
-  b8:	81 e0       	ldi	r24, 0x01	; 1
-  ba:	e8 df       	rcall	.-48     	; 0x8c <digitalWrite.constprop.0>
-
-000000bc <.LVL15>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:251
-
-  PCMSK |= (1 << HALL_IN_PIN);     // unmask PCINT on PB2
-  bc:	aa 9a       	sbi	0x15, 2	; 21
-
-000000be <.Loc.95>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:252
-  GIMSK |= (1 << PCIE);            // enable pin-change group
-  be:	8b b7       	in	r24, 0x3b	; 59
-
-000000c0 <.Loc.96>:
-  c0:	80 62       	ori	r24, 0x20	; 32
-  c2:	8b bf       	out	0x3b, r24	; 59
-
-000000c4 <.Loc.97>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:253
-  sei();
-  c4:	78 94       	sei
-
-000000c6 <.Loc.98>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:254
-}
-  c6:	08 95       	ret
-
-000000c8 <loop>:
-loop():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:258
-
-// ---------------- main loop ----------------
-void loop()
-{
-  c8:	4f 92       	push	r4
-  ca:	5f 92       	push	r5
-  cc:	6f 92       	push	r6
-  ce:	7f 92       	push	r7
-  d0:	8f 92       	push	r8
-  d2:	9f 92       	push	r9
-  d4:	af 92       	push	r10
-  d6:	bf 92       	push	r11
-  d8:	cf 92       	push	r12
-  da:	df 92       	push	r13
-  dc:	ef 92       	push	r14
-  de:	ff 92       	push	r15
-  e0:	cf 93       	push	r28
-  e2:	df 93       	push	r29
-  e4:	cd b7       	in	r28, 0x3d	; 61
-  e6:	de b7       	in	r29, 0x3e	; 62
-  e8:	6c 97       	sbiw	r28, 0x1c	; 28
-  ea:	0f b6       	in	r0, 0x3f	; 63
-  ec:	f8 94       	cli
-  ee:	de bf       	out	0x3e, r29	; 62
-  f0:	0f be       	out	0x3f, r0	; 63
-  f2:	cd bf       	out	0x3d, r28	; 61
-
-000000f4 <.Loc.100>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:260
-  // ---- Process any new measurement ----
-  if (newMeas) {
-  f4:	80 91 7b 00 	lds	r24, 0x007B	; 0x80007b <newMeas>
-
-000000f8 <.Loc.102>:
-  f8:	81 15       	cp	r24, r1
-  fa:	09 f4       	brne	.+2      	; 0xfe <.LBB96>
-
-000000fc <L0^A>:
-  fc:	36 c1       	rjmp	.+620    	; 0x36a <.L16>
-
-000000fe <.LBB96>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:261
-    newMeas = false;
-  fe:	10 92 7b 00 	sts	0x007B, r1	; 0x80007b <newMeas>
-
-00000102 <.Loc.105>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:263
-
-    uint32_t p = periodUs;
- 102:	40 90 7c 00 	lds	r4, 0x007C	; 0x80007c <periodUs>
- 106:	50 90 7d 00 	lds	r5, 0x007D	; 0x80007d <periodUs+0x1>
- 10a:	60 90 7e 00 	lds	r6, 0x007E	; 0x80007e <periodUs+0x2>
- 10e:	70 90 7f 00 	lds	r7, 0x007F	; 0x80007f <periodUs+0x3>
-
-00000112 <.LVL16>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:264
-    uint32_t w = lowUs;
- 112:	c0 90 80 00 	lds	r12, 0x0080	; 0x800080 <lowUs>
- 116:	d0 90 81 00 	lds	r13, 0x0081	; 0x800081 <lowUs+0x1>
- 11a:	e0 90 82 00 	lds	r14, 0x0082	; 0x800082 <lowUs+0x2>
- 11e:	f0 90 83 00 	lds	r15, 0x0083	; 0x800083 <lowUs+0x3>
-
-00000122 <.LVL17>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:266
-
-    if (p >= MIN_INPUT_PERIOD_US && p <= MAX_INPUT_PERIOD_US && w < p) {
- 122:	d3 01       	movw	r26, r6
- 124:	c2 01       	movw	r24, r4
- 126:	88 5e       	subi	r24, 0xE8	; 232
- 128:	93 40       	sbci	r25, 0x03	; 3
- 12a:	a1 09       	sbc	r26, r1
- 12c:	b1 09       	sbc	r27, r1
-
-0000012e <.Loc.111>:
- 12e:	89 35       	cpi	r24, 0x59	; 89
- 130:	9e 43       	sbci	r25, 0x3E	; 62
- 132:	af 40       	sbci	r26, 0x0F	; 15
- 134:	b1 05       	cpc	r27, r1
- 136:	08 f0       	brcs	.+2      	; 0x13a <.Loc.112>
-
-00000138 <L0^A>:
- 138:	18 c1       	rjmp	.+560    	; 0x36a <.L16>
-
-0000013a <.Loc.112>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:266 (discriminator 1)
- 13a:	c4 14       	cp	r12, r4
- 13c:	d5 04       	cpc	r13, r5
- 13e:	e6 04       	cpc	r14, r6
- 140:	f7 04       	cpc	r15, r7
- 142:	08 f0       	brcs	.+2      	; 0x146 <.LBB98>
-
-00000144 <L0^A>:
- 144:	12 c1       	rjmp	.+548    	; 0x36a <.L16>
-
-00000146 <.LBB98>:
-millis():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:341
-    uint8_t oldSREG = SREG;
- 146:	2f b7       	in	r18, 0x3f	; 63
-
-00000148 <.LVL18>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:345
-    cli();
- 148:	f8 94       	cli
-
-0000014a <.Loc.119>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:346
-    m = millis_timer_millis;
- 14a:	80 91 65 00 	lds	r24, 0x0065	; 0x800065 <millis_timer_millis>
- 14e:	90 91 66 00 	lds	r25, 0x0066	; 0x800066 <millis_timer_millis+0x1>
- 152:	a0 91 67 00 	lds	r26, 0x0067	; 0x800067 <millis_timer_millis+0x2>
- 156:	b0 91 68 00 	lds	r27, 0x0068	; 0x800068 <millis_timer_millis+0x3>
-
-0000015a <.LVL19>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:347
-    SREG = oldSREG;
- 15a:	2f bf       	out	0x3f, r18	; 63
-
-0000015c <.LBE99>:
-loop():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:267 (discriminator 1)
-      lastMeasMs = millis();
- 15c:	80 93 76 00 	sts	0x0076, r24	; 0x800076 <lastMeasMs>
- 160:	90 93 77 00 	sts	0x0077, r25	; 0x800077 <lastMeasMs+0x1>
- 164:	a0 93 78 00 	sts	0x0078, r26	; 0x800078 <lastMeasMs+0x2>
- 168:	b0 93 79 00 	sts	0x0079, r27	; 0x800079 <lastMeasMs+0x3>
-
-0000016c <.LVL21>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:270
-
-      // Speed: one wheel revolution = p * PULSES_PER_REV microseconds
-      float revTimeSec = (p / 1e6f) * (float)PULSES_PER_REV;
- 16c:	c3 01       	movw	r24, r6
- 16e:	b2 01       	movw	r22, r4
- 170:	eb d2       	rcall	.+1494   	; 0x748 <__floatunsisf>
-
-00000172 <.LVL22>:
- 172:	20 e0       	ldi	r18, 0x00	; 0
- 174:	34 e2       	ldi	r19, 0x24	; 36
- 176:	44 e7       	ldi	r20, 0x74	; 116
- 178:	59 e4       	ldi	r21, 0x49	; 73
- 17a:	69 83       	std	Y+1, r22	; 0x01
- 17c:	7a 83       	std	Y+2, r23	; 0x02
- 17e:	8b 83       	std	Y+3, r24	; 0x03
- 180:	9c 83       	std	Y+4, r25	; 0x04
- 182:	69 81       	ldd	r22, Y+1	; 0x01
- 184:	7a 81       	ldd	r23, Y+2	; 0x02
- 186:	8b 81       	ldd	r24, Y+3	; 0x03
- 188:	9c 81       	ldd	r25, Y+4	; 0x04
- 18a:	76 d2       	rcall	.+1260   	; 0x678 <__divsf3>
-
-0000018c <.LVL23>:
- 18c:	20 e0       	ldi	r18, 0x00	; 0
- 18e:	30 e0       	ldi	r19, 0x00	; 0
- 190:	40 ec       	ldi	r20, 0xC0	; 192
- 192:	50 e4       	ldi	r21, 0x40	; 64
- 194:	6d 83       	std	Y+5, r22	; 0x05
- 196:	7e 83       	std	Y+6, r23	; 0x06
- 198:	8f 83       	std	Y+7, r24	; 0x07
- 19a:	98 87       	std	Y+8, r25	; 0x08
- 19c:	6d 81       	ldd	r22, Y+5	; 0x05
- 19e:	7e 81       	ldd	r23, Y+6	; 0x06
- 1a0:	8f 81       	ldd	r24, Y+7	; 0x07
- 1a2:	98 85       	ldd	r25, Y+8	; 0x08
- 1a4:	87 d3       	rcall	.+1806   	; 0x8b4 <__mulsf3>
-
-000001a6 <.LVL24>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:271
-      float speed_kmh  = (WHEEL_CIRCUMFERENCE_M / revTimeSec) * 3.6f;
- 1a6:	4b 01       	movw	r8, r22
- 1a8:	5c 01       	movw	r10, r24
- 1aa:	a5 01       	movw	r20, r10
- 1ac:	94 01       	movw	r18, r8
- 1ae:	6b e2       	ldi	r22, 0x2B	; 43
- 1b0:	7a e1       	ldi	r23, 0x1A	; 26
- 1b2:	84 e1       	ldi	r24, 0x14	; 20
- 1b4:	90 e4       	ldi	r25, 0x40	; 64
- 1b6:	60 d2       	rcall	.+1216   	; 0x678 <__divsf3>
-
-000001b8 <.LVL25>:
- 1b8:	26 e6       	ldi	r18, 0x66	; 102
- 1ba:	36 e6       	ldi	r19, 0x66	; 102
- 1bc:	46 e6       	ldi	r20, 0x66	; 102
- 1be:	50 e4       	ldi	r21, 0x40	; 64
- 1c0:	69 87       	std	Y+9, r22	; 0x09
- 1c2:	7a 87       	std	Y+10, r23	; 0x0a
- 1c4:	8b 87       	std	Y+11, r24	; 0x0b
- 1c6:	9c 87       	std	Y+12, r25	; 0x0c
- 1c8:	69 85       	ldd	r22, Y+9	; 0x09
- 1ca:	7a 85       	ldd	r23, Y+10	; 0x0a
- 1cc:	8b 85       	ldd	r24, Y+11	; 0x0b
- 1ce:	9c 85       	ldd	r25, Y+12	; 0x0c
- 1d0:	71 d3       	rcall	.+1762   	; 0x8b4 <__mulsf3>
-
-000001d2 <.LVL26>:
- 1d2:	4b 01       	movw	r8, r22
- 1d4:	5c 01       	movw	r10, r24
-
-000001d6 <.LVL27>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:274
-
-      // Doubling decision with hysteresis
-      bool wasDbl = doubling;
- 1d6:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
- 1da:	89 83       	std	Y+1, r24	; 0x01
-
-000001dc <.LVL28>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:275
-      if (!doubling && speed_kmh > SPEED_WARN_KMH) {
- 1dc:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-000001e0 <.Loc.136>:
- 1e0:	81 11       	cpse	r24, r1
- 1e2:	66 c0       	rjmp	.+204    	; 0x2b0 <.L18>
-
-000001e4 <.Loc.137>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:275 (discriminator 1)
- 1e4:	20 e0       	ldi	r18, 0x00	; 0
- 1e6:	30 e0       	ldi	r19, 0x00	; 0
- 1e8:	48 ec       	ldi	r20, 0xC8	; 200
- 1ea:	51 e4       	ldi	r21, 0x41	; 65
- 1ec:	8d 86       	std	Y+13, r8	; 0x0d
- 1ee:	9e 86       	std	Y+14, r9	; 0x0e
- 1f0:	af 86       	std	Y+15, r10	; 0x0f
- 1f2:	b8 8a       	std	Y+16, r11	; 0x10
- 1f4:	6d 85       	ldd	r22, Y+13	; 0x0d
- 1f6:	7e 85       	ldd	r23, Y+14	; 0x0e
- 1f8:	8f 85       	ldd	r24, Y+15	; 0x0f
- 1fa:	98 89       	ldd	r25, Y+16	; 0x10
- 1fc:	57 d3       	rcall	.+1710   	; 0x8ac <__gesf2>
-
-000001fe <.LVL30>:
- 1fe:	18 16       	cp	r1, r24
- 200:	0c f0       	brlt	.+2      	; 0x204 <.Loc.138>
-
-00000202 <L0^A>:
- 202:	56 c0       	rjmp	.+172    	; 0x2b0 <.L18>
-
-00000204 <.Loc.138>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:276
-        doubling = true;
- 204:	81 e0       	ldi	r24, 0x01	; 1
- 206:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <doubling>
-
-0000020a <.L20>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:282
-      } else if (doubling && speed_kmh < SPEED_WARN_KMH - SPEED_HYST_KMH) {
-        doubling = false;
-      }
-
-      // Brake-cutoff decision with hysteresis
-      if (!cutting && speed_kmh > SPEED_CUTOFF_KMH) {
- 20a:	80 91 75 00 	lds	r24, 0x0075	; 0x800075 <cutting>
- 20e:	81 11       	cpse	r24, r1
- 210:	66 c0       	rjmp	.+204    	; 0x2de <.L22>
-
-00000212 <.Loc.141>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:282 (discriminator 1)
- 212:	20 e0       	ldi	r18, 0x00	; 0
- 214:	30 e0       	ldi	r19, 0x00	; 0
- 216:	48 ec       	ldi	r20, 0xC8	; 200
- 218:	51 e4       	ldi	r21, 0x41	; 65
- 21a:	8d 8a       	std	Y+21, r8	; 0x15
- 21c:	9e 8a       	std	Y+22, r9	; 0x16
- 21e:	af 8a       	std	Y+23, r10	; 0x17
- 220:	b8 8e       	std	Y+24, r11	; 0x18
- 222:	6d 89       	ldd	r22, Y+21	; 0x15
- 224:	7e 89       	ldd	r23, Y+22	; 0x16
- 226:	8f 89       	ldd	r24, Y+23	; 0x17
- 228:	98 8d       	ldd	r25, Y+24	; 0x18
- 22a:	40 d3       	rcall	.+1664   	; 0x8ac <__gesf2>
-
-0000022c <.LVL31>:
- 22c:	18 16       	cp	r1, r24
- 22e:	0c f0       	brlt	.+2      	; 0x232 <.Loc.142>
-
-00000230 <L0^A>:
- 230:	67 c0       	rjmp	.+206    	; 0x300 <.L23>
-
-00000232 <.Loc.142>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:283
-        cutting = true;
- 232:	81 e0       	ldi	r24, 0x01	; 1
- 234:	80 93 75 00 	sts	0x0075, r24	; 0x800075 <cutting>
-
-00000238 <.L25>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:287 (discriminator 1)
-      } else if (cutting && speed_kmh < SPEED_CUTOFF_KMH - SPEED_HYST_KMH) {
-        cutting = false;
-      }
-      if (cutting) BRAKE_CUT_ON(); else BRAKE_CUT_OFF();
- 238:	bc 9a       	sbi	0x17, 4	; 23
-
-0000023a <.L39>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:290
-
-      // Compute output timing
-      if (doubling) {
- 23a:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-0000023e <.Loc.148>:
- 23e:	81 15       	cp	r24, r1
- 240:	09 f4       	brne	.+2      	; 0x244 <.Loc.149>
-
-00000242 <L0^A>:
- 242:	60 c0       	rjmp	.+192    	; 0x304 <.L27>
-
-00000244 <.Loc.149>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:291
-        outPeriodUs = p / 2;      // 2× frequency -> half the period
- 244:	d3 01       	movw	r26, r6
- 246:	c2 01       	movw	r24, r4
- 248:	b6 95       	lsr	r27
- 24a:	a7 95       	ror	r26
- 24c:	97 95       	ror	r25
- 24e:	87 95       	ror	r24
-
-00000250 <.Loc.151>:
- 250:	80 93 71 00 	sts	0x0071, r24	; 0x800071 <outPeriodUs>
- 254:	90 93 72 00 	sts	0x0072, r25	; 0x800072 <outPeriodUs+0x1>
- 258:	a0 93 73 00 	sts	0x0073, r26	; 0x800073 <outPeriodUs+0x2>
- 25c:	b0 93 74 00 	sts	0x0074, r27	; 0x800074 <outPeriodUs+0x3>
-
-00000260 <.Loc.152>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:292
-        outPulseUs  = w / 2;      // preserve duty cycle
- 260:	f6 94       	lsr	r15
- 262:	e7 94       	ror	r14
- 264:	d7 94       	ror	r13
- 266:	c7 94       	ror	r12
-
-00000268 <.Loc.154>:
- 268:	c0 92 6d 00 	sts	0x006D, r12	; 0x80006d <outPulseUs>
- 26c:	d0 92 6e 00 	sts	0x006E, r13	; 0x80006e <outPulseUs+0x1>
- 270:	e0 92 6f 00 	sts	0x006F, r14	; 0x80006f <outPulseUs+0x2>
- 274:	f0 92 70 00 	sts	0x0070, r15	; 0x800070 <outPulseUs+0x3>
-
-00000278 <.Loc.155>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:297
-      } else {
-        outPeriodUs = p;
-        outPulseUs  = w;
-      }
-      if (outPeriodUs < MIN_OUT_PERIOD_US) outPeriodUs = MIN_OUT_PERIOD_US;
- 278:	88 3e       	cpi	r24, 0xE8	; 232
- 27a:	23 e0       	ldi	r18, 0x03	; 3
- 27c:	92 07       	cpc	r25, r18
- 27e:	a1 05       	cpc	r26, r1
- 280:	b1 05       	cpc	r27, r1
- 282:	08 f4       	brcc	.+2      	; 0x286 <.L29>
-
-00000284 <L0^A>:
- 284:	a9 c0       	rjmp	.+338    	; 0x3d8 <.L28>
-
-00000286 <.L29>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:298
-      if (outPulseUs  < MIN_OUT_PULSE_US)  outPulseUs  = MIN_OUT_PULSE_US;
- 286:	24 ef       	ldi	r18, 0xF4	; 244
- 288:	c2 16       	cp	r12, r18
- 28a:	21 e0       	ldi	r18, 0x01	; 1
- 28c:	d2 06       	cpc	r13, r18
- 28e:	e1 04       	cpc	r14, r1
- 290:	f1 04       	cpc	r15, r1
- 292:	08 f0       	brcs	.+2      	; 0x296 <.L30>
-
-00000294 <L0^A>:
- 294:	ae c0       	rjmp	.+348    	; 0x3f2 <.L32>
-
-00000296 <.L30>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:298 (discriminator 1)
- 296:	84 ef       	ldi	r24, 0xF4	; 244
- 298:	91 e0       	ldi	r25, 0x01	; 1
- 29a:	a0 e0       	ldi	r26, 0x00	; 0
- 29c:	b0 e0       	ldi	r27, 0x00	; 0
-
-0000029e <.L53>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:299 (discriminator 1)
-      if (outPulseUs  >= outPeriodUs)      outPulseUs  = outPeriodUs / 2;
- 29e:	80 93 6d 00 	sts	0x006D, r24	; 0x80006d <outPulseUs>
- 2a2:	90 93 6e 00 	sts	0x006E, r25	; 0x80006e <outPulseUs+0x1>
- 2a6:	a0 93 6f 00 	sts	0x006F, r26	; 0x80006f <outPulseUs+0x2>
- 2aa:	b0 93 70 00 	sts	0x0070, r27	; 0x800070 <outPulseUs+0x3>
- 2ae:	42 c0       	rjmp	.+132    	; 0x334 <.L31>
-
-000002b0 <.L18>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:277
-      } else if (doubling && speed_kmh < SPEED_WARN_KMH - SPEED_HYST_KMH) {
- 2b0:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-000002b4 <.Loc.162>:
- 2b4:	81 15       	cp	r24, r1
- 2b6:	09 f4       	brne	.+2      	; 0x2ba <.Loc.163>
-
-000002b8 <L0^A>:
- 2b8:	a8 cf       	rjmp	.-176    	; 0x20a <.L20>
-
-000002ba <.Loc.163>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:277 (discriminator 1)
- 2ba:	20 e0       	ldi	r18, 0x00	; 0
- 2bc:	30 e0       	ldi	r19, 0x00	; 0
- 2be:	40 ec       	ldi	r20, 0xC0	; 192
- 2c0:	51 e4       	ldi	r21, 0x41	; 65
- 2c2:	89 8a       	std	Y+17, r8	; 0x11
- 2c4:	9a 8a       	std	Y+18, r9	; 0x12
- 2c6:	ab 8a       	std	Y+19, r10	; 0x13
- 2c8:	bc 8a       	std	Y+20, r11	; 0x14
- 2ca:	69 89       	ldd	r22, Y+17	; 0x11
- 2cc:	7a 89       	ldd	r23, Y+18	; 0x12
- 2ce:	8b 89       	ldd	r24, Y+19	; 0x13
- 2d0:	9c 89       	ldd	r25, Y+20	; 0x14
- 2d2:	ce d1       	rcall	.+924    	; 0x670 <__cmpsf2>
-
-000002d4 <.LVL34>:
- 2d4:	87 ff       	sbrs	r24, 7
- 2d6:	99 cf       	rjmp	.-206    	; 0x20a <.L20>
-
-000002d8 <.Loc.164>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:278
-        doubling = false;
- 2d8:	10 92 7a 00 	sts	0x007A, r1	; 0x80007a <doubling>
- 2dc:	96 cf       	rjmp	.-212    	; 0x20a <.L20>
-
-000002de <.L22>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:284 (discriminator 1)
-      } else if (cutting && speed_kmh < SPEED_CUTOFF_KMH - SPEED_HYST_KMH) {
- 2de:	20 e0       	ldi	r18, 0x00	; 0
- 2e0:	30 e0       	ldi	r19, 0x00	; 0
- 2e2:	40 ec       	ldi	r20, 0xC0	; 192
- 2e4:	51 e4       	ldi	r21, 0x41	; 65
- 2e6:	89 8e       	std	Y+25, r8	; 0x19
- 2e8:	9a 8e       	std	Y+26, r9	; 0x1a
- 2ea:	ab 8e       	std	Y+27, r10	; 0x1b
- 2ec:	bc 8e       	std	Y+28, r11	; 0x1c
- 2ee:	69 8d       	ldd	r22, Y+25	; 0x19
- 2f0:	7a 8d       	ldd	r23, Y+26	; 0x1a
- 2f2:	8b 8d       	ldd	r24, Y+27	; 0x1b
- 2f4:	9c 8d       	ldd	r25, Y+28	; 0x1c
- 2f6:	bc d1       	rcall	.+888    	; 0x670 <__cmpsf2>
-
-000002f8 <.LVL35>:
- 2f8:	87 ff       	sbrs	r24, 7
- 2fa:	9e cf       	rjmp	.-196    	; 0x238 <.L25>
-
-000002fc <.Loc.168>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:285
-        cutting = false;
- 2fc:	10 92 75 00 	sts	0x0075, r1	; 0x800075 <cutting>
-
-00000300 <.L23>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:287 (discriminator 2)
-      if (cutting) BRAKE_CUT_ON(); else BRAKE_CUT_OFF();
- 300:	bc 98       	cbi	0x17, 4	; 23
- 302:	9b cf       	rjmp	.-202    	; 0x23a <.L39>
-
-00000304 <.L27>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:294
-        outPeriodUs = p;
- 304:	40 92 71 00 	sts	0x0071, r4	; 0x800071 <outPeriodUs>
- 308:	50 92 72 00 	sts	0x0072, r5	; 0x800072 <outPeriodUs+0x1>
- 30c:	60 92 73 00 	sts	0x0073, r6	; 0x800073 <outPeriodUs+0x2>
- 310:	70 92 74 00 	sts	0x0074, r7	; 0x800074 <outPeriodUs+0x3>
-
-00000314 <.Loc.174>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:295
-        outPulseUs  = w;
- 314:	c0 92 6d 00 	sts	0x006D, r12	; 0x80006d <outPulseUs>
- 318:	d0 92 6e 00 	sts	0x006E, r13	; 0x80006e <outPulseUs+0x1>
- 31c:	e0 92 6f 00 	sts	0x006F, r14	; 0x80006f <outPulseUs+0x2>
- 320:	f0 92 70 00 	sts	0x0070, r15	; 0x800070 <outPulseUs+0x3>
-
-00000324 <.Loc.176>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:298
-      if (outPulseUs  < MIN_OUT_PULSE_US)  outPulseUs  = MIN_OUT_PULSE_US;
- 324:	84 ef       	ldi	r24, 0xF4	; 244
- 326:	c8 16       	cp	r12, r24
- 328:	81 e0       	ldi	r24, 0x01	; 1
- 32a:	d8 06       	cpc	r13, r24
- 32c:	e1 04       	cpc	r14, r1
- 32e:	f1 04       	cpc	r15, r1
- 330:	08 f4       	brcc	.+2      	; 0x334 <.L31>
-
-00000332 <L0^A>:
- 332:	b1 cf       	rjmp	.-158    	; 0x296 <.L30>
-
-00000334 <.L31>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:302
-
-      // ---- Transitions ----
-      if (doubling && !wasDbl) {
- 334:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-00000338 <.Loc.180>:
- 338:	81 15       	cp	r24, r1
- 33a:	61 f0       	breq	.+24     	; 0x354 <.L33>
-
-0000033c <.Loc.181>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:302 (discriminator 1)
- 33c:	89 81       	ldd	r24, Y+1	; 0x01
- 33e:	81 11       	cpse	r24, r1
- 340:	09 c0       	rjmp	.+18     	; 0x354 <.L33>
-
-00000342 <.Loc.182>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:304
-        // Just entered doubling: sync the output scheduler
-        tOutLastUs = micros();
- 342:	7e de       	rcall	.-772    	; 0x40 <micros>
-
-00000344 <.LVL37>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:304 (discriminator 1)
- 344:	60 93 69 00 	sts	0x0069, r22	; 0x800069 <tOutLastUs>
- 348:	70 93 6a 00 	sts	0x006A, r23	; 0x80006a <tOutLastUs+0x1>
- 34c:	80 93 6b 00 	sts	0x006B, r24	; 0x80006b <tOutLastUs+0x2>
- 350:	90 93 6c 00 	sts	0x006C, r25	; 0x80006c <tOutLastUs+0x3>
-
-00000354 <.L33>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:306
-      }
-      if (!doubling && wasDbl) {
- 354:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-00000358 <.Loc.187>:
- 358:	81 11       	cpse	r24, r1
- 35a:	07 c0       	rjmp	.+14     	; 0x36a <.L16>
-
-0000035c <.Loc.188>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:306 (discriminator 1)
- 35c:	29 81       	ldd	r18, Y+1	; 0x01
- 35e:	21 15       	cp	r18, r1
- 360:	21 f0       	breq	.+8      	; 0x36a <.L16>
-
-00000362 <.LBB101>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:308 (discriminator 1)
-        // Just exited doubling: snap output to input level
-        digitalWrite(OUT_PIN, digitalRead(HALL_IN_PIN));
- 362:	88 27       	eor	r24, r24
- 364:	b2 99       	sbic	0x16, 2	; 22
- 366:	83 95       	inc	r24
- 368:	91 de       	rcall	.-734    	; 0x8c <digitalWrite.constprop.0>
-
-0000036a <.L16>:
-millis():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:341
-    uint8_t oldSREG = SREG;
- 36a:	2f b7       	in	r18, 0x3f	; 63
-
-0000036c <.LVL40>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:345
-    cli();
- 36c:	f8 94       	cli
-
-0000036e <.Loc.200>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:346
-    m = millis_timer_millis;
- 36e:	80 91 65 00 	lds	r24, 0x0065	; 0x800065 <millis_timer_millis>
- 372:	90 91 66 00 	lds	r25, 0x0066	; 0x800066 <millis_timer_millis+0x1>
- 376:	a0 91 67 00 	lds	r26, 0x0067	; 0x800067 <millis_timer_millis+0x2>
- 37a:	b0 91 68 00 	lds	r27, 0x0068	; 0x800068 <millis_timer_millis+0x3>
-
-0000037e <.LVL41>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:347
-    SREG = oldSREG;
- 37e:	2f bf       	out	0x3f, r18	; 63
-
-00000380 <.LBE105>:
-loop():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:314 (discriminator 1)
-      }
-    }
-  }
-
-  // ---- Idle: no input activity ----
-  if (millis() - lastMeasMs > STALE_MS) {
- 380:	40 91 76 00 	lds	r20, 0x0076	; 0x800076 <lastMeasMs>
- 384:	50 91 77 00 	lds	r21, 0x0077	; 0x800077 <lastMeasMs+0x1>
- 388:	60 91 78 00 	lds	r22, 0x0078	; 0x800078 <lastMeasMs+0x2>
- 38c:	70 91 79 00 	lds	r23, 0x0079	; 0x800079 <lastMeasMs+0x3>
- 390:	84 1b       	sub	r24, r20
- 392:	95 0b       	sbc	r25, r21
- 394:	a6 0b       	sbc	r26, r22
- 396:	b7 0b       	sbc	r27, r23
-
-00000398 <.Loc.207>:
- 398:	89 3e       	cpi	r24, 0xE9	; 233
- 39a:	93 40       	sbci	r25, 0x03	; 3
- 39c:	a1 05       	cpc	r26, r1
- 39e:	b1 05       	cpc	r27, r1
- 3a0:	98 f1       	brcs	.+102    	; 0x408 <.L34>
-
-000003a2 <.Loc.208>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:315
-    doubling = false;
- 3a2:	10 92 7a 00 	sts	0x007A, r1	; 0x80007a <doubling>
-
-000003a6 <.Loc.210>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:316
-    cutting  = false;
- 3a6:	10 92 75 00 	sts	0x0075, r1	; 0x800075 <cutting>
-
-000003aa <.Loc.212>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:317
-    BRAKE_CUT_OFF();
- 3aa:	bc 98       	cbi	0x17, 4	; 23
-
-000003ac <.L38>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:329
-    uint32_t nowUs = micros();
-    if ((uint32_t)(nowUs - tOutLastUs) >= outPeriodUs) {
-      tOutLastUs += outPeriodUs;
-      digitalWrite(OUT_PIN, LOW);
-      delayMicroseconds(outPulseUs);
-      digitalWrite(OUT_PIN, HIGH);
- 3ac:	81 e0       	ldi	r24, 0x01	; 1
-
-000003ae <.Loc.216>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:334
-    }
-  }
-
-  // ---- Mirror mode: ISR already handles output, nothing to do here ----
-}
- 3ae:	6c 96       	adiw	r28, 0x1c	; 28
- 3b0:	0f b6       	in	r0, 0x3f	; 63
- 3b2:	f8 94       	cli
- 3b4:	de bf       	out	0x3e, r29	; 62
- 3b6:	0f be       	out	0x3f, r0	; 63
- 3b8:	cd bf       	out	0x3d, r28	; 61
- 3ba:	df 91       	pop	r29
- 3bc:	cf 91       	pop	r28
- 3be:	ff 90       	pop	r15
- 3c0:	ef 90       	pop	r14
- 3c2:	df 90       	pop	r13
- 3c4:	cf 90       	pop	r12
- 3c6:	bf 90       	pop	r11
- 3c8:	af 90       	pop	r10
- 3ca:	9f 90       	pop	r9
- 3cc:	8f 90       	pop	r8
- 3ce:	7f 90       	pop	r7
- 3d0:	6f 90       	pop	r6
- 3d2:	5f 90       	pop	r5
- 3d4:	4f 90       	pop	r4
-
-000003d6 <.Loc.217>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:329
-      digitalWrite(OUT_PIN, HIGH);
- 3d6:	5a ce       	rjmp	.-844    	; 0x8c <digitalWrite.constprop.0>
-
-000003d8 <.L28>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:297 (discriminator 1)
-      if (outPeriodUs < MIN_OUT_PERIOD_US) outPeriodUs = MIN_OUT_PERIOD_US;
- 3d8:	88 ee       	ldi	r24, 0xE8	; 232
- 3da:	93 e0       	ldi	r25, 0x03	; 3
- 3dc:	a0 e0       	ldi	r26, 0x00	; 0
- 3de:	b0 e0       	ldi	r27, 0x00	; 0
- 3e0:	80 93 71 00 	sts	0x0071, r24	; 0x800071 <outPeriodUs>
- 3e4:	90 93 72 00 	sts	0x0072, r25	; 0x800072 <outPeriodUs+0x1>
- 3e8:	a0 93 73 00 	sts	0x0073, r26	; 0x800073 <outPeriodUs+0x2>
- 3ec:	b0 93 74 00 	sts	0x0074, r27	; 0x800074 <outPeriodUs+0x3>
- 3f0:	4a cf       	rjmp	.-364    	; 0x286 <.L29>
-
-000003f2 <.L32>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:299
-      if (outPulseUs  >= outPeriodUs)      outPulseUs  = outPeriodUs / 2;
- 3f2:	c8 16       	cp	r12, r24
- 3f4:	d9 06       	cpc	r13, r25
- 3f6:	ea 06       	cpc	r14, r26
- 3f8:	fb 06       	cpc	r15, r27
- 3fa:	08 f4       	brcc	.+2      	; 0x3fe <.Loc.222>
-
-000003fc <L0^A>:
- 3fc:	9b cf       	rjmp	.-202    	; 0x334 <.L31>
-
-000003fe <.Loc.222>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:299 (discriminator 1)
- 3fe:	b6 95       	lsr	r27
- 400:	a7 95       	ror	r26
- 402:	97 95       	ror	r25
- 404:	87 95       	ror	r24
- 406:	4b cf       	rjmp	.-362    	; 0x29e <.L53>
-
-00000408 <.L34>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:323
-  if (doubling) {
- 408:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-0000040c <.Loc.227>:
- 40c:	81 15       	cp	r24, r1
- 40e:	e1 f1       	breq	.+120    	; 0x488 <.L14>
-
-00000410 <.Loc.228>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:324
-    uint32_t nowUs = micros();
- 410:	17 de       	rcall	.-978    	; 0x40 <micros>
-
-00000412 <.LVL45>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:325
-    if ((uint32_t)(nowUs - tOutLastUs) >= outPeriodUs) {
- 412:	80 90 69 00 	lds	r8, 0x0069	; 0x800069 <tOutLastUs>
- 416:	90 90 6a 00 	lds	r9, 0x006A	; 0x80006a <tOutLastUs+0x1>
- 41a:	a0 90 6b 00 	lds	r10, 0x006B	; 0x80006b <tOutLastUs+0x2>
- 41e:	b0 90 6c 00 	lds	r11, 0x006C	; 0x80006c <tOutLastUs+0x3>
-
-00000422 <.Loc.232>:
- 422:	c0 90 71 00 	lds	r12, 0x0071	; 0x800071 <outPeriodUs>
- 426:	d0 90 72 00 	lds	r13, 0x0072	; 0x800072 <outPeriodUs+0x1>
- 42a:	e0 90 73 00 	lds	r14, 0x0073	; 0x800073 <outPeriodUs+0x2>
- 42e:	f0 90 74 00 	lds	r15, 0x0074	; 0x800074 <outPeriodUs+0x3>
-
-00000432 <.Loc.233>:
- 432:	ab 01       	movw	r20, r22
- 434:	bc 01       	movw	r22, r24
- 436:	48 19       	sub	r20, r8
- 438:	59 09       	sbc	r21, r9
- 43a:	6a 09       	sbc	r22, r10
- 43c:	7b 09       	sbc	r23, r11
-
-0000043e <.Loc.234>:
- 43e:	4c 15       	cp	r20, r12
- 440:	5d 05       	cpc	r21, r13
- 442:	6e 05       	cpc	r22, r14
- 444:	7f 05       	cpc	r23, r15
- 446:	00 f1       	brcs	.+64     	; 0x488 <.L14>
-
-00000448 <.Loc.235>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:326
-      tOutLastUs += outPeriodUs;
- 448:	d5 01       	movw	r26, r10
- 44a:	c4 01       	movw	r24, r8
- 44c:	8c 0d       	add	r24, r12
- 44e:	9d 1d       	adc	r25, r13
- 450:	ae 1d       	adc	r26, r14
- 452:	bf 1d       	adc	r27, r15
- 454:	80 93 69 00 	sts	0x0069, r24	; 0x800069 <tOutLastUs>
- 458:	90 93 6a 00 	sts	0x006A, r25	; 0x80006a <tOutLastUs+0x1>
- 45c:	a0 93 6b 00 	sts	0x006B, r26	; 0x80006b <tOutLastUs+0x2>
- 460:	b0 93 6c 00 	sts	0x006C, r27	; 0x80006c <tOutLastUs+0x3>
-
-00000464 <.Loc.237>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:327
-      digitalWrite(OUT_PIN, LOW);
- 464:	80 e0       	ldi	r24, 0x00	; 0
- 466:	12 de       	rcall	.-988    	; 0x8c <digitalWrite.constprop.0>
-
-00000468 <.LVL46>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:328
-      delayMicroseconds(outPulseUs);
- 468:	80 91 6d 00 	lds	r24, 0x006D	; 0x80006d <outPulseUs>
- 46c:	90 91 6e 00 	lds	r25, 0x006E	; 0x80006e <outPulseUs+0x1>
-
-00000470 <.LBB109>:
-delayMicroseconds():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:822
-
-  #else
-    // for the 1 MHz internal clock (default settings for common AVR microcontrollers)
-    // the overhead of the function calls is 14 (16) cycles
-    if (us <= 16) return; //= 3 cycles, (4 when true)
-    if (us <= 25) return; //= 3 cycles, (4 when true), (must be at least 25 if we want to subtract 22)
- 470:	8a 31       	cpi	r24, 0x1A	; 26
- 472:	91 05       	cpc	r25, r1
- 474:	08 f4       	brcc	.+2      	; 0x478 <.LBB111>
-
-00000476 <L0^A>:
- 476:	9a cf       	rjmp	.-204    	; 0x3ac <.L38>
-
-00000478 <.LBB111>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:825
-
-    // compensate for the time taken by the preceding and next commands (about 22 cycles)
-    us -= 22; // = 2 cycles
- 478:	46 97       	sbiw	r24, 0x16	; 22
-
-0000047a <.Loc.248>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:829
-    // the following loop takes 4 microseconds (4 cycles)
-    // per iteration, so execute it us/4 times
-    // us is at least 4, divided by 4 gives us 1 (no zero delay bug)
-    us >>= 2; // us div 4, = 4 cycles
- 47a:	96 95       	lsr	r25
- 47c:	87 95       	ror	r24
- 47e:	96 95       	lsr	r25
- 480:	87 95       	ror	r24
-
-00000482 <.L1^B2>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:833
-  #endif
-
-  // busy wait
-  __asm__ __volatile__ (
- 482:	01 97       	sbiw	r24, 0x01	; 1
- 484:	f1 f7       	brne	.-4      	; 0x482 <.L1^B2>
-
-00000486 <.Loc.251>:
- 486:	92 cf       	rjmp	.-220    	; 0x3ac <.L38>
-
-00000488 <.L14>:
-loop():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:334
-}
- 488:	6c 96       	adiw	r28, 0x1c	; 28
- 48a:	0f b6       	in	r0, 0x3f	; 63
- 48c:	f8 94       	cli
- 48e:	de bf       	out	0x3e, r29	; 62
- 490:	0f be       	out	0x3f, r0	; 63
- 492:	cd bf       	out	0x3d, r28	; 61
- 494:	df 91       	pop	r29
- 496:	cf 91       	pop	r28
- 498:	ff 90       	pop	r15
- 49a:	ef 90       	pop	r14
- 49c:	df 90       	pop	r13
- 49e:	cf 90       	pop	r12
- 4a0:	bf 90       	pop	r11
- 4a2:	af 90       	pop	r10
- 4a4:	9f 90       	pop	r9
- 4a6:	8f 90       	pop	r8
- 4a8:	7f 90       	pop	r7
- 4aa:	6f 90       	pop	r6
- 4ac:	5f 90       	pop	r5
- 4ae:	4f 90       	pop	r4
- 4b0:	08 95       	ret
-
-000004b2 <__vector_2>:
+0000008c <__vector_2>:
 __vector_2():
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:211
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:124
+//  Pin-change interrupt on the speed wire
+//    falling edge: a magnet may be passing the hall sensor
+//    rising edge:  the pulse has ended, so decide whether it was real
+// ------------------------------------------------------------
+ISR(PCINT0_vect)
 {
- 4b2:	1f 92       	push	r1
- 4b4:	0f 92       	push	r0
- 4b6:	0f b6       	in	r0, 0x3f	; 63
- 4b8:	0f 92       	push	r0
- 4ba:	11 24       	eor	r1, r1
- 4bc:	cf 92       	push	r12
- 4be:	df 92       	push	r13
- 4c0:	ef 92       	push	r14
- 4c2:	ff 92       	push	r15
- 4c4:	2f 93       	push	r18
- 4c6:	3f 93       	push	r19
- 4c8:	4f 93       	push	r20
- 4ca:	5f 93       	push	r21
- 4cc:	6f 93       	push	r22
- 4ce:	7f 93       	push	r23
- 4d0:	8f 93       	push	r24
- 4d2:	9f 93       	push	r25
- 4d4:	af 93       	push	r26
- 4d6:	bf 93       	push	r27
- 4d8:	cf 93       	push	r28
- 4da:	ef 93       	push	r30
- 4dc:	ff 93       	push	r31
+  8c:	1f 92       	push	r1
+  8e:	0f 92       	push	r0
+  90:	0f b6       	in	r0, 0x3f	; 63
+  92:	0f 92       	push	r0
+  94:	11 24       	eor	r1, r1
+  96:	cf 92       	push	r12
+  98:	df 92       	push	r13
+  9a:	ef 92       	push	r14
+  9c:	ff 92       	push	r15
+  9e:	0f 93       	push	r16
+  a0:	1f 93       	push	r17
+  a2:	2f 93       	push	r18
+  a4:	3f 93       	push	r19
+  a6:	4f 93       	push	r20
+  a8:	5f 93       	push	r21
+  aa:	6f 93       	push	r22
+  ac:	7f 93       	push	r23
+  ae:	8f 93       	push	r24
+  b0:	9f 93       	push	r25
+  b2:	af 93       	push	r26
+  b4:	bf 93       	push	r27
+  b6:	ef 93       	push	r30
+  b8:	ff 93       	push	r31
 
-000004de <.Loc.255>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:212
-  uint32_t now  = micros();
- 4de:	b0 dd       	rcall	.-1184   	; 0x40 <micros>
+000000ba <.Loc.22>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:125
+  uint32_t now = micros();
+  ba:	c2 df       	rcall	.-124    	; 0x40 <micros>
 
-000004e0 <.LVL53>:
- 4e0:	6b 01       	movw	r12, r22
- 4e2:	7c 01       	movw	r14, r24
+000000bc <.LVL5>:
+  bc:	6b 01       	movw	r12, r22
+  be:	7c 01       	movw	r14, r24
 
-000004e4 <.LVL54>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:213
-  bool     high = (PINB & (1 << HALL_IN_PIN)) != 0;
- 4e4:	c6 b3       	in	r28, 0x16	; 22
- 4e6:	c4 70       	andi	r28, 0x04	; 4
+000000c0 <.LVL6>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:127
 
-000004e8 <.LVL55>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:262
+  if ((PINB & (1 << HALL_IN_PIN)) == 0) {      // line went LOW
+  c0:	b2 99       	sbic	0x16, 2	; 22
+  c2:	1f c0       	rjmp	.+62     	; 0x102 <.L10>
 
- 4e8:	dc dd       	rcall	.-1096   	; 0xa2 <setup>
+000000c4 <.Loc.25>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:128
+    fallUs = now;
+  c4:	c0 92 6e 00 	sts	0x006E, r12	; 0x80006e <fallUs>
+  c8:	d0 92 6f 00 	sts	0x006F, r13	; 0x80006f <fallUs+0x1>
+  cc:	e0 92 70 00 	sts	0x0070, r14	; 0x800070 <fallUs+0x2>
+  d0:	f0 92 71 00 	sts	0x0071, r15	; 0x800071 <fallUs+0x3>
 
-000004ea <.LVL56>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:300
-
- 4ea:	ee dd       	rcall	.-1060   	; 0xc8 <loop>
-
-000004ec <.LVL57>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:217
-    if (tFallUs != 0) {
- 4ec:	80 91 84 00 	lds	r24, 0x0084	; 0x800084 <tFallUs>
- 4f0:	90 91 85 00 	lds	r25, 0x0085	; 0x800085 <tFallUs+0x1>
- 4f4:	a0 91 86 00 	lds	r26, 0x0086	; 0x800086 <tFallUs+0x2>
- 4f8:	b0 91 87 00 	lds	r27, 0x0087	; 0x800087 <tFallUs+0x3>
-
-000004fc <.Loc.265>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:215
-  if (high) {
- 4fc:	c1 15       	cp	r28, r1
- 4fe:	a9 f1       	breq	.+106    	; 0x56a <.L55>
-
-00000500 <.Loc.266>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:217
-    if (tFallUs != 0) {
- 500:	89 2b       	or	r24, r25
- 502:	8a 2b       	or	r24, r26
- 504:	8b 2b       	or	r24, r27
- 506:	a1 f0       	breq	.+40     	; 0x530 <.L56>
-
-00000508 <.Loc.267>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:218
-      lowUs = now - tFallUs;
- 508:	80 91 84 00 	lds	r24, 0x0084	; 0x800084 <tFallUs>
- 50c:	90 91 85 00 	lds	r25, 0x0085	; 0x800085 <tFallUs+0x1>
- 510:	a0 91 86 00 	lds	r26, 0x0086	; 0x800086 <tFallUs+0x2>
- 514:	b0 91 87 00 	lds	r27, 0x0087	; 0x800087 <tFallUs+0x3>
-
-00000518 <.Loc.269>:
- 518:	c8 1a       	sub	r12, r24
- 51a:	d9 0a       	sbc	r13, r25
- 51c:	ea 0a       	sbc	r14, r26
- 51e:	fb 0a       	sbc	r15, r27
-
-00000520 <.Loc.270>:
- 520:	c0 92 80 00 	sts	0x0080, r12	; 0x800080 <lowUs>
- 524:	d0 92 81 00 	sts	0x0081, r13	; 0x800081 <lowUs+0x1>
- 528:	e0 92 82 00 	sts	0x0082, r14	; 0x800082 <lowUs+0x2>
- 52c:	f0 92 83 00 	sts	0x0083, r15	; 0x800083 <lowUs+0x3>
-
-00000530 <.L56>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:230
-  if (!doubling) {
- 530:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <doubling>
-
-00000534 <.Loc.273>:
- 534:	81 15       	cp	r24, r1
- 536:	19 f4       	brne	.+6      	; 0x53e <.L54>
-
-00000538 <.Loc.274>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:231
-    if (high) PORTB |=  (1 << OUT_PIN);
- 538:	c1 15       	cp	r28, r1
- 53a:	e9 f1       	breq	.+122    	; 0x5b6 <.L59>
-
-0000053c <.Loc.275>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:231 (discriminator 1)
- 53c:	c3 9a       	sbi	0x18, 3	; 24
-
-0000053e <.L54>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:234
+000000d4 <.L9>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:150
+    if (++fastCount >= FAST_PULSES) BRAKE_ON();
+  } else {
+    fastCount = 0;
+    if (period > RELEASE_PERIOD_US) BRAKE_OFF();
+  }
 }
- 53e:	ff 91       	pop	r31
- 540:	ef 91       	pop	r30
- 542:	cf 91       	pop	r28
+  d4:	ff 91       	pop	r31
+  d6:	ef 91       	pop	r30
+  d8:	bf 91       	pop	r27
+  da:	af 91       	pop	r26
+  dc:	9f 91       	pop	r25
+  de:	8f 91       	pop	r24
+  e0:	7f 91       	pop	r23
+  e2:	6f 91       	pop	r22
+  e4:	5f 91       	pop	r21
+  e6:	4f 91       	pop	r20
+  e8:	3f 91       	pop	r19
+  ea:	2f 91       	pop	r18
+  ec:	1f 91       	pop	r17
+  ee:	0f 91       	pop	r16
+  f0:	ff 90       	pop	r15
+  f2:	ef 90       	pop	r14
+  f4:	df 90       	pop	r13
+  f6:	cf 90       	pop	r12
+  f8:	0f 90       	pop	r0
+  fa:	0f be       	out	0x3f, r0	; 63
+  fc:	0f 90       	pop	r0
+  fe:	1f 90       	pop	r1
+ 100:	18 95       	reti
 
-00000544 <.Loc.278>:
- 544:	bf 91       	pop	r27
- 546:	af 91       	pop	r26
- 548:	9f 91       	pop	r25
- 54a:	8f 91       	pop	r24
- 54c:	7f 91       	pop	r23
- 54e:	6f 91       	pop	r22
- 550:	5f 91       	pop	r21
- 552:	4f 91       	pop	r20
- 554:	3f 91       	pop	r19
- 556:	2f 91       	pop	r18
- 558:	ff 90       	pop	r15
- 55a:	ef 90       	pop	r14
- 55c:	df 90       	pop	r13
- 55e:	cf 90       	pop	r12
- 560:	0f 90       	pop	r0
- 562:	0f be       	out	0x3f, r0	; 63
- 564:	0f 90       	pop	r0
- 566:	1f 90       	pop	r1
- 568:	18 95       	reti
+00000102 <.L10>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:133
+  if (now - fallUs < MIN_LOW_US) return;       // LOW for too short a time: noise
+ 102:	40 91 6e 00 	lds	r20, 0x006E	; 0x80006e <fallUs>
+ 106:	50 91 6f 00 	lds	r21, 0x006F	; 0x80006f <fallUs+0x1>
+ 10a:	60 91 70 00 	lds	r22, 0x0070	; 0x800070 <fallUs+0x2>
+ 10e:	70 91 71 00 	lds	r23, 0x0071	; 0x800071 <fallUs+0x3>
+ 112:	c4 1a       	sub	r12, r20
+ 114:	d5 0a       	sbc	r13, r21
+ 116:	e6 0a       	sbc	r14, r22
+ 118:	f7 0a       	sbc	r15, r23
 
-0000056a <.L55>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:222
-    if (tFallUs != 0) {
- 56a:	89 2b       	or	r24, r25
- 56c:	8a 2b       	or	r24, r26
- 56e:	8b 2b       	or	r24, r27
- 570:	c9 f0       	breq	.+50     	; 0x5a4 <.L57>
+0000011a <.Loc.31>:
+ 11a:	0c ed       	ldi	r16, 0xDC	; 220
+ 11c:	c0 16       	cp	r12, r16
+ 11e:	05 e0       	ldi	r16, 0x05	; 5
+ 120:	d0 06       	cpc	r13, r16
+ 122:	e1 04       	cpc	r14, r1
+ 124:	f1 04       	cpc	r15, r1
+ 126:	b0 f2       	brcs	.-84     	; 0xd4 <.L9>
 
-00000572 <.Loc.280>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:223
-      periodUs = now - tFallUs;
- 572:	80 91 84 00 	lds	r24, 0x0084	; 0x800084 <tFallUs>
- 576:	90 91 85 00 	lds	r25, 0x0085	; 0x800085 <tFallUs+0x1>
- 57a:	a0 91 86 00 	lds	r26, 0x0086	; 0x800086 <tFallUs+0x2>
- 57e:	b0 91 87 00 	lds	r27, 0x0087	; 0x800087 <tFallUs+0x3>
+00000128 <.Loc.32>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:135
+  uint32_t period = fallUs - lastFallUs;
+ 128:	80 91 6a 00 	lds	r24, 0x006A	; 0x80006a <lastFallUs>
+ 12c:	90 91 6b 00 	lds	r25, 0x006B	; 0x80006b <lastFallUs+0x1>
+ 130:	a0 91 6c 00 	lds	r26, 0x006C	; 0x80006c <lastFallUs+0x2>
+ 134:	b0 91 6d 00 	lds	r27, 0x006D	; 0x80006d <lastFallUs+0x3>
+ 138:	8a 01       	movw	r16, r20
+ 13a:	9b 01       	movw	r18, r22
+ 13c:	08 1b       	sub	r16, r24
+ 13e:	19 0b       	sbc	r17, r25
+ 140:	2a 0b       	sbc	r18, r26
+ 142:	3b 0b       	sbc	r19, r27
+ 144:	d9 01       	movw	r26, r18
+ 146:	c8 01       	movw	r24, r16
 
-00000582 <.Loc.282>:
- 582:	a7 01       	movw	r20, r14
- 584:	96 01       	movw	r18, r12
- 586:	28 1b       	sub	r18, r24
- 588:	39 0b       	sbc	r19, r25
- 58a:	4a 0b       	sbc	r20, r26
- 58c:	5b 0b       	sbc	r21, r27
+00000148 <.LVL10>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:136
+  if (period < MIN_PERIOD_US) return;          // too soon after the last pulse: noise
+ 148:	80 31       	cpi	r24, 0x10	; 16
+ 14a:	17 e2       	ldi	r17, 0x27	; 39
+ 14c:	91 07       	cpc	r25, r17
+ 14e:	a1 05       	cpc	r26, r1
+ 150:	b1 05       	cpc	r27, r1
+ 152:	08 f4       	brcc	.+2      	; 0x156 <.Loc.35>
 
-0000058e <.Loc.283>:
- 58e:	20 93 7c 00 	sts	0x007C, r18	; 0x80007c <periodUs>
- 592:	30 93 7d 00 	sts	0x007D, r19	; 0x80007d <periodUs+0x1>
- 596:	40 93 7e 00 	sts	0x007E, r20	; 0x80007e <periodUs+0x2>
- 59a:	50 93 7f 00 	sts	0x007F, r21	; 0x80007f <periodUs+0x3>
+00000154 <L0^A>:
+ 154:	bf cf       	rjmp	.-130    	; 0xd4 <.L9>
 
-0000059e <.Loc.284>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:224
-      newMeas  = true;
- 59e:	81 e0       	ldi	r24, 0x01	; 1
- 5a0:	80 93 7b 00 	sts	0x007B, r24	; 0x80007b <newMeas>
+00000156 <.Loc.35>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:137
+  lastFallUs = fallUs;
+ 156:	40 93 6a 00 	sts	0x006A, r20	; 0x80006a <lastFallUs>
+ 15a:	50 93 6b 00 	sts	0x006B, r21	; 0x80006b <lastFallUs+0x1>
+ 15e:	60 93 6c 00 	sts	0x006C, r22	; 0x80006c <lastFallUs+0x2>
+ 162:	70 93 6d 00 	sts	0x006D, r23	; 0x80006d <lastFallUs+0x3>
 
-000005a4 <.L57>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:226
-    tFallUs = now;
- 5a4:	c0 92 84 00 	sts	0x0084, r12	; 0x800084 <tFallUs>
- 5a8:	d0 92 85 00 	sts	0x0085, r13	; 0x800085 <tFallUs+0x1>
- 5ac:	e0 92 86 00 	sts	0x0086, r14	; 0x800086 <tFallUs+0x2>
- 5b0:	f0 92 87 00 	sts	0x0087, r15	; 0x800087 <tFallUs+0x3>
- 5b4:	bd cf       	rjmp	.-134    	; 0x530 <.L56>
+00000166 <.Loc.37>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:139
+  if (period > STOPPED_US) {                   // first pulse after the wheel was stopped
+ 166:	81 34       	cpi	r24, 0x41	; 65
+ 168:	22 e4       	ldi	r18, 0x42	; 66
+ 16a:	92 07       	cpc	r25, r18
+ 16c:	2f e0       	ldi	r18, 0x0F	; 15
+ 16e:	a2 07       	cpc	r26, r18
+ 170:	b1 05       	cpc	r27, r1
+ 172:	18 f0       	brcs	.+6      	; 0x17a <.L14>
 
-000005b6 <.L59>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:232
-    else      PORTB &= ~(1 << OUT_PIN);
- 5b6:	c3 98       	cbi	0x18, 3	; 24
+00000174 <.Loc.38>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:140
+    fastCount = 0;
+ 174:	10 92 69 00 	sts	0x0069, r1	; 0x800069 <fastCount>
 
-000005b8 <.Loc.290>:
-/Users/neilhaddley/Documents/GitHub/bikespeed/hubspeed/hubspeed.ino:234
-}
- 5b8:	c2 cf       	rjmp	.-124    	; 0x53e <.L54>
+00000178 <.Loc.40>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:141
+    return;
+ 178:	ad cf       	rjmp	.-166    	; 0xd4 <.L9>
 
-000005ba <__vector_5>:
+0000017a <.L14>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:144
+  if (period < CUT_PERIOD_US) {
+ 17a:	82 3f       	cpi	r24, 0xF2	; 242
+ 17c:	38 ed       	ldi	r19, 0xD8	; 216
+ 17e:	93 07       	cpc	r25, r19
+ 180:	a1 05       	cpc	r26, r1
+ 182:	b1 05       	cpc	r27, r1
+ 184:	50 f4       	brcc	.+20     	; 0x19a <.L15>
+
+00000186 <.Loc.42>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:145
+    if (++fastCount >= FAST_PULSES) BRAKE_ON();
+ 186:	80 91 69 00 	lds	r24, 0x0069	; 0x800069 <fastCount>
+ 18a:	8f 5f       	subi	r24, 0xFF	; 255
+
+0000018c <.Loc.44>:
+ 18c:	80 93 69 00 	sts	0x0069, r24	; 0x800069 <fastCount>
+
+00000190 <.Loc.45>:
+ 190:	83 30       	cpi	r24, 0x03	; 3
+ 192:	08 f4       	brcc	.+2      	; 0x196 <.Loc.46>
+
+00000194 <L0^A>:
+ 194:	9f cf       	rjmp	.-194    	; 0xd4 <.L9>
+
+00000196 <.Loc.46>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:145 (discriminator 1)
+ 196:	bc 9a       	sbi	0x17, 4	; 23
+ 198:	9d cf       	rjmp	.-198    	; 0xd4 <.L9>
+
+0000019a <.L15>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:147
+    fastCount = 0;
+ 19a:	10 92 69 00 	sts	0x0069, r1	; 0x800069 <fastCount>
+
+0000019e <.Loc.49>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:148
+    if (period > RELEASE_PERIOD_US) BRAKE_OFF();
+ 19e:	8d 3f       	cpi	r24, 0xFD	; 253
+ 1a0:	91 4e       	sbci	r25, 0xE1	; 225
+ 1a2:	a1 05       	cpc	r26, r1
+ 1a4:	b1 05       	cpc	r27, r1
+
+000001a6 <.Loc.50>:
+ 1a6:	08 f4       	brcc	.+2      	; 0x1aa <.Loc.51>
+
+000001a8 <L0^A>:
+ 1a8:	95 cf       	rjmp	.-214    	; 0xd4 <.L9>
+
+000001aa <.Loc.51>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:148 (discriminator 1)
+ 1aa:	bc 98       	cbi	0x17, 4	; 23
+ 1ac:	93 cf       	rjmp	.-218    	; 0xd4 <.L9>
+
+000001ae <__vector_5>:
 __vector_5():
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:308
   {
- 5ba:	1f 92       	push	r1
- 5bc:	1f b6       	in	r1, 0x3f	; 63
- 5be:	1f 92       	push	r1
- 5c0:	11 24       	eor	r1, r1
- 5c2:	2f 93       	push	r18
- 5c4:	3f 93       	push	r19
- 5c6:	8f 93       	push	r24
- 5c8:	9f 93       	push	r25
- 5ca:	af 93       	push	r26
- 5cc:	bf 93       	push	r27
+ 1ae:	1f 92       	push	r1
+ 1b0:	1f b6       	in	r1, 0x3f	; 63
+ 1b2:	1f 92       	push	r1
+ 1b4:	11 24       	eor	r1, r1
+ 1b6:	2f 93       	push	r18
+ 1b8:	3f 93       	push	r19
+ 1ba:	8f 93       	push	r24
+ 1bc:	9f 93       	push	r25
+ 1be:	af 93       	push	r26
+ 1c0:	bf 93       	push	r27
 
-000005ce <.Loc.317>:
+000001c2 <.Loc.104>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:311
     unsigned long m = millis_timer_millis;
- 5ce:	80 91 65 00 	lds	r24, 0x0065	; 0x800065 <millis_timer_millis>
- 5d2:	90 91 66 00 	lds	r25, 0x0066	; 0x800066 <millis_timer_millis+0x1>
- 5d6:	a0 91 67 00 	lds	r26, 0x0067	; 0x800067 <millis_timer_millis+0x2>
- 5da:	b0 91 68 00 	lds	r27, 0x0068	; 0x800068 <millis_timer_millis+0x3>
+ 1c2:	80 91 65 00 	lds	r24, 0x0065	; 0x800065 <millis_timer_millis>
+ 1c6:	90 91 66 00 	lds	r25, 0x0066	; 0x800066 <millis_timer_millis+0x1>
+ 1ca:	a0 91 67 00 	lds	r26, 0x0067	; 0x800067 <millis_timer_millis+0x2>
+ 1ce:	b0 91 68 00 	lds	r27, 0x0068	; 0x800068 <millis_timer_millis+0x3>
 
-000005de <.LVL64>:
+000001d2 <.LVL17>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:312
     unsigned char f = millis_timer_fract;
- 5de:	30 91 64 00 	lds	r19, 0x0064	; 0x800064 <millis_timer_fract>
+ 1d2:	30 91 64 00 	lds	r19, 0x0064	; 0x800064 <millis_timer_fract>
 
-000005e2 <.LVL65>:
+000001d6 <.LVL18>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:319
     f += FRACT_INC;
- 5e2:	26 e0       	ldi	r18, 0x06	; 6
- 5e4:	23 0f       	add	r18, r19
+ 1d6:	26 e0       	ldi	r18, 0x06	; 6
+ 1d8:	23 0f       	add	r18, r19
 
-000005e6 <.Loc.323>:
+000001da <.Loc.110>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:321
     if (f >= FRACT_MAX)
- 5e6:	2d 37       	cpi	r18, 0x7D	; 125
- 5e8:	60 f1       	brcs	.+88     	; 0x642 <.L69>
+ 1da:	2d 37       	cpi	r18, 0x7D	; 125
+ 1dc:	60 f1       	brcs	.+88     	; 0x236 <.L21>
 
-000005ea <.Loc.325>:
+000001de <.Loc.112>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:323
       f -= FRACT_MAX;
- 5ea:	29 e8       	ldi	r18, 0x89	; 137
+ 1de:	29 e8       	ldi	r18, 0x89	; 137
 
-000005ec <.Loc.327>:
- 5ec:	23 0f       	add	r18, r19
+000001e0 <.Loc.114>:
+ 1e0:	23 0f       	add	r18, r19
 
-000005ee <.Loc.328>:
+000001e2 <.Loc.115>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:324
       m += MILLIS_INC + 1;
- 5ee:	03 96       	adiw	r24, 0x03	; 3
- 5f0:	a1 1d       	adc	r26, r1
- 5f2:	b1 1d       	adc	r27, r1
+ 1e2:	03 96       	adiw	r24, 0x03	; 3
+ 1e4:	a1 1d       	adc	r26, r1
+ 1e6:	b1 1d       	adc	r27, r1
 
-000005f4 <.L70>:
+000001e8 <.L22>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:331
     millis_timer_fract = f;
- 5f4:	20 93 64 00 	sts	0x0064, r18	; 0x800064 <millis_timer_fract>
+ 1e8:	20 93 64 00 	sts	0x0064, r18	; 0x800064 <millis_timer_fract>
 
-000005f8 <.Loc.332>:
+000001ec <.Loc.119>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:332
     millis_timer_millis = m;
- 5f8:	80 93 65 00 	sts	0x0065, r24	; 0x800065 <millis_timer_millis>
- 5fc:	90 93 66 00 	sts	0x0066, r25	; 0x800066 <millis_timer_millis+0x1>
- 600:	a0 93 67 00 	sts	0x0067, r26	; 0x800067 <millis_timer_millis+0x2>
- 604:	b0 93 68 00 	sts	0x0068, r27	; 0x800068 <millis_timer_millis+0x3>
+ 1ec:	80 93 65 00 	sts	0x0065, r24	; 0x800065 <millis_timer_millis>
+ 1f0:	90 93 66 00 	sts	0x0066, r25	; 0x800066 <millis_timer_millis+0x1>
+ 1f4:	a0 93 67 00 	sts	0x0067, r26	; 0x800067 <millis_timer_millis+0x2>
+ 1f8:	b0 93 68 00 	sts	0x0068, r27	; 0x800068 <millis_timer_millis+0x3>
 
-00000608 <.Loc.334>:
+000001fc <.Loc.121>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:334
     millis_timer_overflow_count++;
- 608:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <millis_timer_overflow_count>
- 60c:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <millis_timer_overflow_count+0x1>
- 610:	a0 91 62 00 	lds	r26, 0x0062	; 0x800062 <millis_timer_overflow_count+0x2>
- 614:	b0 91 63 00 	lds	r27, 0x0063	; 0x800063 <millis_timer_overflow_count+0x3>
+ 1fc:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <millis_timer_overflow_count>
+ 200:	90 91 61 00 	lds	r25, 0x0061	; 0x800061 <millis_timer_overflow_count+0x1>
+ 204:	a0 91 62 00 	lds	r26, 0x0062	; 0x800062 <millis_timer_overflow_count+0x2>
+ 208:	b0 91 63 00 	lds	r27, 0x0063	; 0x800063 <millis_timer_overflow_count+0x3>
 
-00000618 <.Loc.336>:
- 618:	01 96       	adiw	r24, 0x01	; 1
- 61a:	a1 1d       	adc	r26, r1
- 61c:	b1 1d       	adc	r27, r1
- 61e:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <millis_timer_overflow_count>
- 622:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <millis_timer_overflow_count+0x1>
- 626:	a0 93 62 00 	sts	0x0062, r26	; 0x800062 <millis_timer_overflow_count+0x2>
- 62a:	b0 93 63 00 	sts	0x0063, r27	; 0x800063 <millis_timer_overflow_count+0x3>
+0000020c <.Loc.123>:
+ 20c:	01 96       	adiw	r24, 0x01	; 1
+ 20e:	a1 1d       	adc	r26, r1
+ 210:	b1 1d       	adc	r27, r1
+ 212:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <millis_timer_overflow_count>
+ 216:	90 93 61 00 	sts	0x0061, r25	; 0x800061 <millis_timer_overflow_count+0x1>
+ 21a:	a0 93 62 00 	sts	0x0062, r26	; 0x800062 <millis_timer_overflow_count+0x2>
+ 21e:	b0 93 63 00 	sts	0x0063, r27	; 0x800063 <millis_timer_overflow_count+0x3>
 
-0000062e <.Loc.337>:
+00000222 <.Loc.124>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:336
   }
- 62e:	bf 91       	pop	r27
- 630:	af 91       	pop	r26
- 632:	9f 91       	pop	r25
- 634:	8f 91       	pop	r24
- 636:	3f 91       	pop	r19
- 638:	2f 91       	pop	r18
- 63a:	1f 90       	pop	r1
- 63c:	1f be       	out	0x3f, r1	; 63
- 63e:	1f 90       	pop	r1
- 640:	18 95       	reti
+ 222:	bf 91       	pop	r27
+ 224:	af 91       	pop	r26
+ 226:	9f 91       	pop	r25
+ 228:	8f 91       	pop	r24
+ 22a:	3f 91       	pop	r19
+ 22c:	2f 91       	pop	r18
+ 22e:	1f 90       	pop	r1
+ 230:	1f be       	out	0x3f, r1	; 63
+ 232:	1f 90       	pop	r1
+ 234:	18 95       	reti
 
-00000642 <.L69>:
+00000236 <.L21>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:328
       m += MILLIS_INC;
- 642:	02 96       	adiw	r24, 0x02	; 2
- 644:	a1 1d       	adc	r26, r1
- 646:	b1 1d       	adc	r27, r1
+ 236:	02 96       	adiw	r24, 0x02	; 2
+ 238:	a1 1d       	adc	r26, r1
+ 23a:	b1 1d       	adc	r27, r1
 
-00000648 <.Loc.340>:
- 648:	d5 cf       	rjmp	.-86     	; 0x5f4 <.L70>
+0000023c <.Loc.127>:
+ 23c:	d5 cf       	rjmp	.-86     	; 0x1e8 <.L22>
 
-0000064a <main>:
+0000023e <main>:
 init():
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:1138
 */
@@ -1485,18 +534,18 @@ init():
   #if (TIMER_TO_USE_FOR_MILLIS == 0)
     #if defined(WGM01) // if Timer0 has PWM
       TCCR0A = (1<<WGM01) | (1<<WGM00);
- 64a:	83 e0       	ldi	r24, 0x03	; 3
- 64c:	8a bd       	out	0x2a, r24	; 42
+ 23e:	83 e0       	ldi	r24, 0x03	; 3
+ 240:	8a bd       	out	0x2a, r24	; 42
 
-0000064e <.Loc.296>:
+00000242 <.Loc.57>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:1141
     #endif
     #if defined(TCCR0B) //The x61 has a wacky Timer0!
       TCCR0B = (MillisTimer_Prescale_Index << CS00);
- 64e:	82 e0       	ldi	r24, 0x02	; 2
- 650:	83 bf       	out	0x33, r24	; 51
+ 242:	82 e0       	ldi	r24, 0x02	; 2
+ 244:	83 bf       	out	0x33, r24	; 51
 
-00000652 <.Loc.298>:
+00000246 <.Loc.59>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:1162
     TCCR1A = 1<<WGM10;
     TCCR1B = (1<<WGM12) | (MillisTimer_Prescale_Index << CS10);
@@ -1504,39 +553,39 @@ init():
 
   // this needs to be called before setup() or some functions won't work there
   sei();
- 652:	78 94       	sei
+ 246:	78 94       	sei
 
-00000654 <.Loc.299>:
+00000248 <.Loc.60>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:1167
 
   #ifndef DISABLEMILLIS
     // Enable the overflow interrupt (this is the basic system tic-toc for millis)
     #if defined(TIMSK) && defined(TOIE0) && (TIMER_TO_USE_FOR_MILLIS == 0)
       sbi(TIMSK, TOIE0);
- 654:	89 b7       	in	r24, 0x39	; 57
- 656:	82 60       	ori	r24, 0x02	; 2
- 658:	89 bf       	out	0x39, r24	; 57
+ 248:	89 b7       	in	r24, 0x39	; 57
+ 24a:	82 60       	ori	r24, 0x02	; 2
+ 24c:	89 bf       	out	0x39, r24	; 57
 
-0000065a <.LBB124>:
+0000024e <.LBB38>:
 initToneTimerInternal():
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:958
       GTCCR = (1<<PWM1B);
- 65a:	80 e4       	ldi	r24, 0x40	; 64
- 65c:	8c bd       	out	0x2c, r24	; 44
+ 24e:	80 e4       	ldi	r24, 0x40	; 64
+ 250:	8c bd       	out	0x2c, r24	; 44
 
-0000065e <.Loc.304>:
+00000252 <.Loc.65>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:959
       OCR1C = 0xFF; //Use 255 as the top to match with the others as this module doesn't have a 8bit PWM mode.
- 65e:	8f ef       	ldi	r24, 0xFF	; 255
- 660:	8d bd       	out	0x2d, r24	; 45
+ 252:	8f ef       	ldi	r24, 0xFF	; 255
+ 254:	8d bd       	out	0x2d, r24	; 45
 
-00000662 <.Loc.306>:
+00000256 <.Loc.67>:
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:960
       TCCR1 = (1<<CTC1) | (1<<PWM1A) | (ToneTimer_Prescale_Index << CS10);
- 662:	84 ec       	ldi	r24, 0xC4	; 196
- 664:	80 bf       	out	0x30, r24	; 48
+ 256:	84 ec       	ldi	r24, 0xC4	; 196
+ 258:	80 bf       	out	0x30, r24	; 48
 
-00000666 <.LBE124>:
+0000025a <.LBE38>:
 init():
 /Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring.c:1214
   #if defined( INITIALIZE_ANALOG_TO_DIGITAL_CONVERTER ) && INITIALIZE_ANALOG_TO_DIGITAL_CONVERTER
@@ -1545,636 +594,136 @@ init():
       // ADCSRA = (ADCSRA & ~((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0))) | (ADC_ARDUINO_PRESCALER << ADPS0) | (1<<ADEN);
       // dude, this is being called on startup. We know that ADCSRA is 0! Why add a RMW cycle?!
       ADCSRA = (ADC_ARDUINO_PRESCALER << ADPS0) | (1<<ADEN);
- 666:	83 e8       	ldi	r24, 0x83	; 131
- 668:	86 b9       	out	0x06, r24	; 6
+ 25a:	83 e8       	ldi	r24, 0x83	; 131
+ 25c:	86 b9       	out	0x06, r24	; 6
 
-0000066a <.LBE122>:
-.Loc.310():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/main.cpp:7
+0000025e <.LBB40>:
+pinMode():
+/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:51
+                cli();
+    *reg &= ~bit;
+    *out &= ~bit;
+    SREG = oldSREG;
+  } else if (mode == INPUT_PULLUP) {
+    uint8_t oldSREG = SREG;
+ 25e:	8f b7       	in	r24, 0x3f	; 63
 
-int main(void)
+00000260 <.LVL13>:
+/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:52
+                cli();
+ 260:	f8 94       	cli
+
+00000262 <.Loc.77>:
+/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:53
+    *reg &= ~bit;
+ 262:	ba 98       	cbi	0x17, 2	; 23
+
+00000264 <.Loc.78>:
+/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:54
+    *out |= bit;
+ 264:	c2 9a       	sbi	0x18, 2	; 24
+
+00000266 <.Loc.79>:
+/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/wiring_digital.c:55
+    SREG = oldSREG;
+ 266:	8f bf       	out	0x3f, r24	; 63
+
+00000268 <.LBE42>:
+.Loc.80():
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:158
 {
-  init();
-
-  setup();
- 66a:	1b dd       	rcall	.-1482   	; 0xa2 <setup>
-
-0000066c <.L67>:
-main():
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/main.cpp:10 (discriminator 1)
-
-  for (;;)
-    loop();
- 66c:	2d dd       	rcall	.-1446   	; 0xc8 <loop>
-
-0000066e <.LVL63>:
-/Users/neilhaddley/Library/Arduino15/packages/ATTinyCore/hardware/avr/1.5.2/cores/tiny/main.cpp:9
-  for (;;)
- 66e:	fe cf       	rjmp	.-4      	; 0x66c <.L67>
-
-00000670 <__cmpsf2>:
-__cmpsf2():
- 670:	a8 d0       	rcall	.+336    	; 0x7c2 <__fp_cmp>
- 672:	08 f4       	brcc	.+2      	; 0x676 <.L1^B1>
- 674:	81 e0       	ldi	r24, 0x01	; 1
-
-00000676 <.L1^B1>:
- 676:	08 95       	ret
-
-00000678 <__divsf3>:
-__divsf3():
- 678:	0c d0       	rcall	.+24     	; 0x692 <__divsf3x>
- 67a:	de c0       	rjmp	.+444    	; 0x838 <__fp_round>
-
-0000067c <.L0^B1>:
-.L0^B1():
- 67c:	d6 d0       	rcall	.+428    	; 0x82a <__fp_pscB>
- 67e:	40 f0       	brcs	.+16     	; 0x690 <.L_nan>
- 680:	cd d0       	rcall	.+410    	; 0x81c <__fp_pscA>
- 682:	30 f0       	brcs	.+12     	; 0x690 <.L_nan>
- 684:	21 f4       	brne	.+8      	; 0x68e <.L_zr>
- 686:	5f 3f       	cpi	r21, 0xFF	; 255
- 688:	19 f0       	breq	.+6      	; 0x690 <.L_nan>
-
-0000068a <.L_inf>:
-.L_inf():
- 68a:	bf c0       	rjmp	.+382    	; 0x80a <__fp_inf>
-
-0000068c <.L1^B1>:
-.L1^B1():
- 68c:	51 11       	cpse	r21, r1
-
-0000068e <.L_zr>:
-.L_zr():
- 68e:	08 c1       	rjmp	.+528    	; 0x8a0 <__fp_szero>
-
-00000690 <.L_nan>:
-.L_nan():
- 690:	c2 c0       	rjmp	.+388    	; 0x816 <__fp_nan>
-
-00000692 <__divsf3x>:
-__divsf3x():
- 692:	e3 d0       	rcall	.+454    	; 0x85a <__fp_split3>
- 694:	98 f3       	brcs	.-26     	; 0x67c <.L0^B1>
-
-00000696 <__divsf3_pse>:
-__divsf3_pse():
- 696:	99 23       	and	r25, r25
- 698:	c9 f3       	breq	.-14     	; 0x68c <.L1^B1>
- 69a:	55 23       	and	r21, r21
- 69c:	b1 f3       	breq	.-20     	; 0x68a <.L_inf>
- 69e:	95 1b       	sub	r25, r21
- 6a0:	55 0b       	sbc	r21, r21
- 6a2:	bb 27       	eor	r27, r27
- 6a4:	aa 27       	eor	r26, r26
-
-000006a6 <.L2^B1>:
-.L2^B1():
- 6a6:	62 17       	cp	r22, r18
- 6a8:	73 07       	cpc	r23, r19
- 6aa:	84 07       	cpc	r24, r20
- 6ac:	38 f0       	brcs	.+14     	; 0x6bc <.L3^B1>
- 6ae:	9f 5f       	subi	r25, 0xFF	; 255
- 6b0:	5f 4f       	sbci	r21, 0xFF	; 255
- 6b2:	22 0f       	add	r18, r18
- 6b4:	33 1f       	adc	r19, r19
- 6b6:	44 1f       	adc	r20, r20
- 6b8:	aa 1f       	adc	r26, r26
- 6ba:	a9 f3       	breq	.-22     	; 0x6a6 <.L2^B1>
-
-000006bc <.L3^B1>:
-.L3^B1():
- 6bc:	33 d0       	rcall	.+102    	; 0x724 <.L_div>
- 6be:	0e 2e       	mov	r0, r30
- 6c0:	3a f0       	brmi	.+14     	; 0x6d0 <.L5^B1>
-
-000006c2 <.L4^B1>:
-.L4^B1():
- 6c2:	e0 e8       	ldi	r30, 0x80	; 128
- 6c4:	30 d0       	rcall	.+96     	; 0x726 <.L_div1>
- 6c6:	91 50       	subi	r25, 0x01	; 1
- 6c8:	50 40       	sbci	r21, 0x00	; 0
- 6ca:	e6 95       	lsr	r30
- 6cc:	00 1c       	adc	r0, r0
- 6ce:	ca f7       	brpl	.-14     	; 0x6c2 <.L4^B1>
-
-000006d0 <.L5^B1>:
-.L5^B1():
- 6d0:	29 d0       	rcall	.+82     	; 0x724 <.L_div>
- 6d2:	fe 2f       	mov	r31, r30
- 6d4:	27 d0       	rcall	.+78     	; 0x724 <.L_div>
- 6d6:	66 0f       	add	r22, r22
- 6d8:	77 1f       	adc	r23, r23
- 6da:	88 1f       	adc	r24, r24
- 6dc:	bb 1f       	adc	r27, r27
- 6de:	26 17       	cp	r18, r22
- 6e0:	37 07       	cpc	r19, r23
- 6e2:	48 07       	cpc	r20, r24
- 6e4:	ab 07       	cpc	r26, r27
- 6e6:	b0 e8       	ldi	r27, 0x80	; 128
- 6e8:	09 f0       	breq	.+2      	; 0x6ec <.L4^B2>
- 6ea:	bb 0b       	sbc	r27, r27
-
-000006ec <.L4^B2>:
-.L4^B2():
- 6ec:	80 2d       	mov	r24, r0
- 6ee:	bf 01       	movw	r22, r30
- 6f0:	ff 27       	eor	r31, r31
- 6f2:	93 58       	subi	r25, 0x83	; 131
- 6f4:	5f 4f       	sbci	r21, 0xFF	; 255
- 6f6:	2a f0       	brmi	.+10     	; 0x702 <.L13^B1>
- 6f8:	9e 3f       	cpi	r25, 0xFE	; 254
- 6fa:	51 05       	cpc	r21, r1
- 6fc:	68 f0       	brcs	.+26     	; 0x718 <.L15^B1>
- 6fe:	85 c0       	rjmp	.+266    	; 0x80a <__fp_inf>
-
-00000700 <.L12^B1>:
-.L12^B1():
- 700:	cf c0       	rjmp	.+414    	; 0x8a0 <__fp_szero>
-
-00000702 <.L13^B1>:
-.L13^B1():
- 702:	5f 3f       	cpi	r21, 0xFF	; 255
- 704:	ec f3       	brlt	.-6      	; 0x700 <.L12^B1>
- 706:	98 3e       	cpi	r25, 0xE8	; 232
- 708:	dc f3       	brlt	.-10     	; 0x700 <.L12^B1>
-
-0000070a <.L14^B1>:
-.L14^B1():
- 70a:	86 95       	lsr	r24
- 70c:	77 95       	ror	r23
- 70e:	67 95       	ror	r22
- 710:	b7 95       	ror	r27
- 712:	f7 95       	ror	r31
- 714:	9f 5f       	subi	r25, 0xFF	; 255
- 716:	c9 f7       	brne	.-14     	; 0x70a <.L14^B1>
-
-00000718 <.L15^B1>:
-.L15^B1():
- 718:	88 0f       	add	r24, r24
- 71a:	91 1d       	adc	r25, r1
- 71c:	96 95       	lsr	r25
- 71e:	87 95       	ror	r24
- 720:	97 f9       	bld	r25, 7
- 722:	08 95       	ret
-
-00000724 <.L_div>:
-.L_div():
- 724:	e1 e0       	ldi	r30, 0x01	; 1
-
-00000726 <.L_div1>:
-.L_div1():
- 726:	66 0f       	add	r22, r22
- 728:	77 1f       	adc	r23, r23
- 72a:	88 1f       	adc	r24, r24
- 72c:	bb 1f       	adc	r27, r27
- 72e:	62 17       	cp	r22, r18
- 730:	73 07       	cpc	r23, r19
- 732:	84 07       	cpc	r24, r20
- 734:	ba 07       	cpc	r27, r26
- 736:	20 f0       	brcs	.+8      	; 0x740 <.L2^B2>
- 738:	62 1b       	sub	r22, r18
- 73a:	73 0b       	sbc	r23, r19
- 73c:	84 0b       	sbc	r24, r20
- 73e:	ba 0b       	sbc	r27, r26
-
-00000740 <.L2^B2>:
-.L2^B2():
- 740:	ee 1f       	adc	r30, r30
- 742:	88 f7       	brcc	.-30     	; 0x726 <.L_div1>
- 744:	e0 95       	com	r30
- 746:	08 95       	ret
-
-00000748 <__floatunsisf>:
-__floatunsisf():
- 748:	e8 94       	clt
- 74a:	09 c0       	rjmp	.+18     	; 0x75e <.L1^B1>
-
-0000074c <__floatsisf>:
- 74c:	97 fb       	bst	r25, 7
- 74e:	3e f4       	brtc	.+14     	; 0x75e <.L1^B1>
- 750:	90 95       	com	r25
- 752:	80 95       	com	r24
- 754:	70 95       	com	r23
- 756:	61 95       	neg	r22
- 758:	7f 4f       	sbci	r23, 0xFF	; 255
- 75a:	8f 4f       	sbci	r24, 0xFF	; 255
- 75c:	9f 4f       	sbci	r25, 0xFF	; 255
-
-0000075e <.L1^B1>:
- 75e:	99 23       	and	r25, r25
- 760:	a9 f0       	breq	.+42     	; 0x78c <.L4^B1>
- 762:	f9 2f       	mov	r31, r25
- 764:	96 e9       	ldi	r25, 0x96	; 150
- 766:	bb 27       	eor	r27, r27
-
-00000768 <.L2^B1>:
- 768:	93 95       	inc	r25
- 76a:	f6 95       	lsr	r31
- 76c:	87 95       	ror	r24
- 76e:	77 95       	ror	r23
- 770:	67 95       	ror	r22
- 772:	b7 95       	ror	r27
- 774:	f1 11       	cpse	r31, r1
- 776:	f8 cf       	rjmp	.-16     	; 0x768 <.L2^B1>
- 778:	fa f4       	brpl	.+62     	; 0x7b8 <.L_pack>
- 77a:	bb 0f       	add	r27, r27
- 77c:	11 f4       	brne	.+4      	; 0x782 <.L3^B1>
- 77e:	60 ff       	sbrs	r22, 0
- 780:	1b c0       	rjmp	.+54     	; 0x7b8 <.L_pack>
-
-00000782 <.L3^B1>:
- 782:	6f 5f       	subi	r22, 0xFF	; 255
- 784:	7f 4f       	sbci	r23, 0xFF	; 255
- 786:	8f 4f       	sbci	r24, 0xFF	; 255
- 788:	9f 4f       	sbci	r25, 0xFF	; 255
- 78a:	16 c0       	rjmp	.+44     	; 0x7b8 <.L_pack>
-
-0000078c <.L4^B1>:
- 78c:	88 23       	and	r24, r24
- 78e:	11 f0       	breq	.+4      	; 0x794 <.L5^B1>
- 790:	96 e9       	ldi	r25, 0x96	; 150
- 792:	11 c0       	rjmp	.+34     	; 0x7b6 <.L8^B1>
-
-00000794 <.L5^B1>:
- 794:	77 23       	and	r23, r23
- 796:	21 f0       	breq	.+8      	; 0x7a0 <.L6^B1>
- 798:	9e e8       	ldi	r25, 0x8E	; 142
- 79a:	87 2f       	mov	r24, r23
- 79c:	76 2f       	mov	r23, r22
- 79e:	05 c0       	rjmp	.+10     	; 0x7aa <.L7^B1>
-
-000007a0 <.L6^B1>:
- 7a0:	66 23       	and	r22, r22
- 7a2:	71 f0       	breq	.+28     	; 0x7c0 <.L9^B1>
- 7a4:	96 e8       	ldi	r25, 0x86	; 134
- 7a6:	86 2f       	mov	r24, r22
- 7a8:	70 e0       	ldi	r23, 0x00	; 0
-
-000007aa <.L7^B1>:
- 7aa:	60 e0       	ldi	r22, 0x00	; 0
- 7ac:	2a f0       	brmi	.+10     	; 0x7b8 <.L_pack>
-
-000007ae <.L10^B1>:
- 7ae:	9a 95       	dec	r25
- 7b0:	66 0f       	add	r22, r22
- 7b2:	77 1f       	adc	r23, r23
- 7b4:	88 1f       	adc	r24, r24
-
-000007b6 <.L8^B1>:
- 7b6:	da f7       	brpl	.-10     	; 0x7ae <.L10^B1>
-
-000007b8 <.L_pack>:
- 7b8:	88 0f       	add	r24, r24
- 7ba:	96 95       	lsr	r25
- 7bc:	87 95       	ror	r24
- 7be:	97 f9       	bld	r25, 7
-
-000007c0 <.L9^B1>:
- 7c0:	08 95       	ret
-
-000007c2 <__fp_cmp>:
-__fp_cmp():
- 7c2:	99 0f       	add	r25, r25
- 7c4:	00 08       	sbc	r0, r0
- 7c6:	55 0f       	add	r21, r21
- 7c8:	aa 0b       	sbc	r26, r26
- 7ca:	e0 e8       	ldi	r30, 0x80	; 128
- 7cc:	fe ef       	ldi	r31, 0xFE	; 254
- 7ce:	16 16       	cp	r1, r22
- 7d0:	17 06       	cpc	r1, r23
- 7d2:	e8 07       	cpc	r30, r24
- 7d4:	f9 07       	cpc	r31, r25
- 7d6:	c0 f0       	brcs	.+48     	; 0x808 <.L9^B1>
- 7d8:	12 16       	cp	r1, r18
- 7da:	13 06       	cpc	r1, r19
- 7dc:	e4 07       	cpc	r30, r20
- 7de:	f5 07       	cpc	r31, r21
- 7e0:	98 f0       	brcs	.+38     	; 0x808 <.L9^B1>
- 7e2:	62 1b       	sub	r22, r18
- 7e4:	73 0b       	sbc	r23, r19
- 7e6:	84 0b       	sbc	r24, r20
- 7e8:	95 0b       	sbc	r25, r21
- 7ea:	39 f4       	brne	.+14     	; 0x7fa <.L1^B1>
- 7ec:	0a 26       	eor	r0, r26
- 7ee:	61 f0       	breq	.+24     	; 0x808 <.L9^B1>
- 7f0:	23 2b       	or	r18, r19
- 7f2:	24 2b       	or	r18, r20
- 7f4:	25 2b       	or	r18, r21
- 7f6:	21 f4       	brne	.+8      	; 0x800 <.L2^B1>
- 7f8:	08 95       	ret
-
-000007fa <.L1^B1>:
- 7fa:	0a 26       	eor	r0, r26
- 7fc:	09 f4       	brne	.+2      	; 0x800 <.L2^B1>
- 7fe:	a1 40       	sbci	r26, 0x01	; 1
-
-00000800 <.L2^B1>:
- 800:	a6 95       	lsr	r26
- 802:	8f ef       	ldi	r24, 0xFF	; 255
- 804:	81 1d       	adc	r24, r1
- 806:	81 1d       	adc	r24, r1
-
-00000808 <.L9^B1>:
- 808:	08 95       	ret
-
-0000080a <__fp_inf>:
-__fp_inf():
- 80a:	97 f9       	bld	r25, 7
- 80c:	9f 67       	ori	r25, 0x7F	; 127
- 80e:	80 e8       	ldi	r24, 0x80	; 128
- 810:	70 e0       	ldi	r23, 0x00	; 0
- 812:	60 e0       	ldi	r22, 0x00	; 0
- 814:	08 95       	ret
-
-00000816 <__fp_nan>:
-__fp_nan():
- 816:	9f ef       	ldi	r25, 0xFF	; 255
- 818:	80 ec       	ldi	r24, 0xC0	; 192
- 81a:	08 95       	ret
-
-0000081c <__fp_pscA>:
-__fp_pscA():
- 81c:	00 24       	eor	r0, r0
- 81e:	0a 94       	dec	r0
- 820:	16 16       	cp	r1, r22
- 822:	17 06       	cpc	r1, r23
- 824:	18 06       	cpc	r1, r24
- 826:	09 06       	cpc	r0, r25
- 828:	08 95       	ret
-
-0000082a <__fp_pscB>:
-__fp_pscB():
- 82a:	00 24       	eor	r0, r0
- 82c:	0a 94       	dec	r0
- 82e:	12 16       	cp	r1, r18
- 830:	13 06       	cpc	r1, r19
- 832:	14 06       	cpc	r1, r20
- 834:	05 06       	cpc	r0, r21
- 836:	08 95       	ret
-
-00000838 <__fp_round>:
-__fp_round():
- 838:	09 2e       	mov	r0, r25
- 83a:	03 94       	inc	r0
- 83c:	00 0c       	add	r0, r0
- 83e:	11 f4       	brne	.+4      	; 0x844 <.L1^B1>
- 840:	88 23       	and	r24, r24
- 842:	52 f0       	brmi	.+20     	; 0x858 <.L3^B1>
-
-00000844 <.L1^B1>:
- 844:	bb 0f       	add	r27, r27
- 846:	40 f4       	brcc	.+16     	; 0x858 <.L3^B1>
- 848:	bf 2b       	or	r27, r31
- 84a:	11 f4       	brne	.+4      	; 0x850 <.L2^B1>
- 84c:	60 ff       	sbrs	r22, 0
- 84e:	04 c0       	rjmp	.+8      	; 0x858 <.L3^B1>
-
-00000850 <.L2^B1>:
- 850:	6f 5f       	subi	r22, 0xFF	; 255
- 852:	7f 4f       	sbci	r23, 0xFF	; 255
- 854:	8f 4f       	sbci	r24, 0xFF	; 255
- 856:	9f 4f       	sbci	r25, 0xFF	; 255
-
-00000858 <.L3^B1>:
- 858:	08 95       	ret
-
-0000085a <__fp_split3>:
-__fp_split3():
- 85a:	57 fd       	sbrc	r21, 7
- 85c:	90 58       	subi	r25, 0x80	; 128
- 85e:	44 0f       	add	r20, r20
- 860:	55 1f       	adc	r21, r21
- 862:	59 f0       	breq	.+22     	; 0x87a <.L4^B1>
- 864:	5f 3f       	cpi	r21, 0xFF	; 255
- 866:	71 f0       	breq	.+28     	; 0x884 <.L5^B1>
-
-00000868 <.L1^B1>:
- 868:	47 95       	ror	r20
-
-0000086a <__fp_splitA>:
-__fp_splitA():
- 86a:	88 0f       	add	r24, r24
- 86c:	97 fb       	bst	r25, 7
- 86e:	99 1f       	adc	r25, r25
- 870:	61 f0       	breq	.+24     	; 0x88a <.L6^B1>
- 872:	9f 3f       	cpi	r25, 0xFF	; 255
- 874:	79 f0       	breq	.+30     	; 0x894 <.L7^B1>
-
-00000876 <.L3^B1>:
-.L3^B1():
- 876:	87 95       	ror	r24
- 878:	08 95       	ret
-
-0000087a <.L4^B1>:
-.L4^B1():
- 87a:	12 16       	cp	r1, r18
- 87c:	13 06       	cpc	r1, r19
- 87e:	14 06       	cpc	r1, r20
- 880:	55 1f       	adc	r21, r21
- 882:	f2 cf       	rjmp	.-28     	; 0x868 <.L1^B1>
-
-00000884 <.L5^B1>:
-.L5^B1():
- 884:	46 95       	lsr	r20
- 886:	f1 df       	rcall	.-30     	; 0x86a <__fp_splitA>
- 888:	08 c0       	rjmp	.+16     	; 0x89a <.L8^B1>
-
-0000088a <.L6^B1>:
-.L6^B1():
- 88a:	16 16       	cp	r1, r22
- 88c:	17 06       	cpc	r1, r23
- 88e:	18 06       	cpc	r1, r24
- 890:	99 1f       	adc	r25, r25
- 892:	f1 cf       	rjmp	.-30     	; 0x876 <.L3^B1>
-
-00000894 <.L7^B1>:
-.L7^B1():
- 894:	86 95       	lsr	r24
- 896:	71 05       	cpc	r23, r1
- 898:	61 05       	cpc	r22, r1
-
-0000089a <.L8^B1>:
-.L8^B1():
- 89a:	08 94       	sec
- 89c:	08 95       	ret
-
-0000089e <__fp_zero>:
-__fp_zero():
- 89e:	e8 94       	clt
-
-000008a0 <__fp_szero>:
-__fp_szero():
- 8a0:	bb 27       	eor	r27, r27
- 8a2:	66 27       	eor	r22, r22
- 8a4:	77 27       	eor	r23, r23
- 8a6:	cb 01       	movw	r24, r22
- 8a8:	97 f9       	bld	r25, 7
- 8aa:	08 95       	ret
-
-000008ac <__gesf2>:
-__gesf2():
- 8ac:	8a df       	rcall	.-236    	; 0x7c2 <__fp_cmp>
- 8ae:	08 f4       	brcc	.+2      	; 0x8b2 <.L1^B1>
- 8b0:	8f ef       	ldi	r24, 0xFF	; 255
-
-000008b2 <.L1^B1>:
- 8b2:	08 95       	ret
-
-000008b4 <__mulsf3>:
-__mulsf3():
- 8b4:	0a d0       	rcall	.+20     	; 0x8ca <__mulsf3x>
- 8b6:	c0 cf       	rjmp	.-128    	; 0x838 <__fp_round>
-
-000008b8 <.L0^B1>:
-.L0^B1():
- 8b8:	b1 df       	rcall	.-158    	; 0x81c <__fp_pscA>
- 8ba:	28 f0       	brcs	.+10     	; 0x8c6 <.L1^B1>
- 8bc:	b6 df       	rcall	.-148    	; 0x82a <__fp_pscB>
- 8be:	18 f0       	brcs	.+6      	; 0x8c6 <.L1^B1>
- 8c0:	95 23       	and	r25, r21
- 8c2:	09 f0       	breq	.+2      	; 0x8c6 <.L1^B1>
- 8c4:	a2 cf       	rjmp	.-188    	; 0x80a <__fp_inf>
-
-000008c6 <.L1^B1>:
-.L1^B1():
- 8c6:	a7 cf       	rjmp	.-178    	; 0x816 <__fp_nan>
-
-000008c8 <.L2^B1>:
-.L2^B1():
- 8c8:	eb cf       	rjmp	.-42     	; 0x8a0 <__fp_szero>
-
-000008ca <__mulsf3x>:
-__mulsf3x():
- 8ca:	c7 df       	rcall	.-114    	; 0x85a <__fp_split3>
- 8cc:	a8 f3       	brcs	.-22     	; 0x8b8 <.L0^B1>
-
-000008ce <__mulsf3_pse>:
- 8ce:	99 23       	and	r25, r25
- 8d0:	d9 f3       	breq	.-10     	; 0x8c8 <.L2^B1>
- 8d2:	55 23       	and	r21, r21
- 8d4:	c9 f3       	breq	.-14     	; 0x8c8 <.L2^B1>
- 8d6:	95 0f       	add	r25, r21
- 8d8:	50 e0       	ldi	r21, 0x00	; 0
- 8da:	55 1f       	adc	r21, r21
- 8dc:	aa 27       	eor	r26, r26
- 8de:	ee 27       	eor	r30, r30
- 8e0:	ff 27       	eor	r31, r31
- 8e2:	bb 27       	eor	r27, r27
- 8e4:	00 24       	eor	r0, r0
- 8e6:	08 94       	sec
- 8e8:	67 95       	ror	r22
-
-000008ea <.L1^B2>:
- 8ea:	20 f4       	brcc	.+8      	; 0x8f4 <.L2^B2>
- 8ec:	e2 0f       	add	r30, r18
- 8ee:	f3 1f       	adc	r31, r19
- 8f0:	b4 1f       	adc	r27, r20
- 8f2:	0a 1e       	adc	r0, r26
-
-000008f4 <.L2^B2>:
- 8f4:	22 0f       	add	r18, r18
- 8f6:	33 1f       	adc	r19, r19
- 8f8:	44 1f       	adc	r20, r20
- 8fa:	aa 1f       	adc	r26, r26
- 8fc:	66 95       	lsr	r22
- 8fe:	a9 f7       	brne	.-22     	; 0x8ea <.L1^B2>
- 900:	77 95       	ror	r23
-
-00000902 <.L3^B1>:
- 902:	30 f4       	brcc	.+12     	; 0x910 <.L4^B1>
- 904:	f3 0f       	add	r31, r19
- 906:	b4 1f       	adc	r27, r20
- 908:	0a 1e       	adc	r0, r26
- 90a:	12 1e       	adc	r1, r18
- 90c:	08 f4       	brcc	.+2      	; 0x910 <.L4^B1>
- 90e:	63 95       	inc	r22
-
-00000910 <.L4^B1>:
- 910:	33 0f       	add	r19, r19
- 912:	44 1f       	adc	r20, r20
- 914:	aa 1f       	adc	r26, r26
- 916:	22 1f       	adc	r18, r18
- 918:	76 95       	lsr	r23
- 91a:	99 f7       	brne	.-26     	; 0x902 <.L3^B1>
- 91c:	87 95       	ror	r24
-
-0000091e <.L5^B1>:
- 91e:	20 f4       	brcc	.+8      	; 0x928 <.L6^B1>
- 920:	b4 0f       	add	r27, r20
- 922:	0a 1e       	adc	r0, r26
- 924:	12 1e       	adc	r1, r18
- 926:	63 1f       	adc	r22, r19
-
-00000928 <.L6^B1>:
- 928:	44 0f       	add	r20, r20
- 92a:	aa 1f       	adc	r26, r26
- 92c:	22 1f       	adc	r18, r18
- 92e:	33 1f       	adc	r19, r19
- 930:	86 95       	lsr	r24
- 932:	a9 f7       	brne	.-22     	; 0x91e <.L5^B1>
- 934:	86 2f       	mov	r24, r22
- 936:	71 2d       	mov	r23, r1
- 938:	60 2d       	mov	r22, r0
- 93a:	11 24       	eor	r1, r1
- 93c:	9f 57       	subi	r25, 0x7F	; 127
- 93e:	50 40       	sbci	r21, 0x00	; 0
- 940:	8a f0       	brmi	.+34     	; 0x964 <.L13^B1>
- 942:	e1 f0       	breq	.+56     	; 0x97c <.L15^B1>
-
-00000944 <.L10^B1>:
- 944:	88 23       	and	r24, r24
- 946:	4a f0       	brmi	.+18     	; 0x95a <.L11^B1>
- 948:	ee 0f       	add	r30, r30
- 94a:	ff 1f       	adc	r31, r31
- 94c:	bb 1f       	adc	r27, r27
- 94e:	66 1f       	adc	r22, r22
- 950:	77 1f       	adc	r23, r23
- 952:	88 1f       	adc	r24, r24
- 954:	91 50       	subi	r25, 0x01	; 1
- 956:	50 40       	sbci	r21, 0x00	; 0
- 958:	a9 f7       	brne	.-22     	; 0x944 <.L10^B1>
-
-0000095a <.L11^B1>:
- 95a:	9e 3f       	cpi	r25, 0xFE	; 254
- 95c:	51 05       	cpc	r21, r1
- 95e:	70 f0       	brcs	.+28     	; 0x97c <.L15^B1>
- 960:	54 cf       	rjmp	.-344    	; 0x80a <__fp_inf>
-
-00000962 <.L12^B1>:
- 962:	9e cf       	rjmp	.-196    	; 0x8a0 <__fp_szero>
-
-00000964 <.L13^B1>:
- 964:	5f 3f       	cpi	r21, 0xFF	; 255
- 966:	ec f3       	brlt	.-6      	; 0x962 <.L12^B1>
- 968:	98 3e       	cpi	r25, 0xE8	; 232
- 96a:	dc f3       	brlt	.-10     	; 0x962 <.L12^B1>
-
-0000096c <.L14^B1>:
- 96c:	86 95       	lsr	r24
- 96e:	77 95       	ror	r23
- 970:	67 95       	ror	r22
- 972:	b7 95       	ror	r27
- 974:	f7 95       	ror	r31
- 976:	e7 95       	ror	r30
- 978:	9f 5f       	subi	r25, 0xFF	; 255
- 97a:	c1 f7       	brne	.-16     	; 0x96c <.L14^B1>
-
-0000097c <.L15^B1>:
- 97c:	fe 2b       	or	r31, r30
- 97e:	88 0f       	add	r24, r24
- 980:	91 1d       	adc	r25, r1
- 982:	96 95       	lsr	r25
- 984:	87 95       	ror	r24
- 986:	97 f9       	bld	r25, 7
- 988:	08 95       	ret
-
-0000098a <_exit>:
-.Loc.0():
+  // The controller holds the wire HIGH; the internal pull-up only keeps
+  // the pin quiet if the tap wire ever comes loose.
+  pinMode(HALL_IN_PIN, INPUT_PULLUP);
+
+  PORTB &= ~(1 << BRAKE_PIN);      // latch LOW; only DDRB changes
+ 268:	c4 98       	cbi	0x18, 4	; 24
+
+0000026a <.Loc.83>:
+setup():
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:159
+  BRAKE_OFF();
+ 26a:	bc 98       	cbi	0x17, 4	; 23
+
+0000026c <.Loc.84>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:161
+
+  PCMSK |= (1 << HALL_IN_PIN);     // pin-change interrupt on PB2 only
+ 26c:	aa 9a       	sbi	0x15, 2	; 21
+
+0000026e <.Loc.86>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:162
+  GIMSK |= (1 << PCIE);
+ 26e:	8b b7       	in	r24, 0x3b	; 59
+
+00000270 <.Loc.87>:
+ 270:	80 62       	ori	r24, 0x20	; 32
+ 272:	8b bf       	out	0x3b, r24	; 59
+
+00000274 <.Loc.88>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:163
+  sei();
+ 274:	78 94       	sei
+
+00000276 <.L17>:
+.Loc.89():
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:169
+}
+
+void loop()
+{
+  // No wheel pulses for a second: the bike has stopped, let go of the brake line
+  noInterrupts();
+ 276:	f8 94       	cli
+
+00000278 <.Loc.93>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:170
+  uint32_t last = lastFallUs;
+ 278:	c0 90 6a 00 	lds	r12, 0x006A	; 0x80006a <lastFallUs>
+ 27c:	d0 90 6b 00 	lds	r13, 0x006B	; 0x80006b <lastFallUs+0x1>
+ 280:	e0 90 6c 00 	lds	r14, 0x006C	; 0x80006c <lastFallUs+0x2>
+ 284:	f0 90 6d 00 	lds	r15, 0x006D	; 0x80006d <lastFallUs+0x3>
+
+00000288 <.LVL15>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:171
+  interrupts();
+ 288:	78 94       	sei
+
+0000028a <.Loc.96>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:172
+  if ((uint32_t)(micros() - last) > STOPPED_US) BRAKE_OFF();
+ 28a:	da de       	rcall	.-588    	; 0x40 <micros>
+
+0000028c <.LVL16>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:172 (discriminator 1)
+ 28c:	6c 19       	sub	r22, r12
+ 28e:	7d 09       	sbc	r23, r13
+ 290:	8e 09       	sbc	r24, r14
+ 292:	9f 09       	sbc	r25, r15
+
+00000294 <.Loc.99>:
+ 294:	61 34       	cpi	r22, 0x41	; 65
+ 296:	72 44       	sbci	r23, 0x42	; 66
+ 298:	8f 40       	sbci	r24, 0x0F	; 15
+ 29a:	91 05       	cpc	r25, r1
+ 29c:	60 f3       	brcs	.-40     	; 0x276 <.L17>
+
+0000029e <.LBB47>:
+.Loc.100():
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:172 (discriminator 1)
+ 29e:	bc 98       	cbi	0x17, 4	; 23
+
+000002a0 <.Loc.102>:
+/private/var/folders/wj/dtsztyf17rsg4k2h64b1p7h40000gn/T/tmp.s4rA3ADvan/hubspeed/hubspeed.cpp:173
+}
+ 2a0:	ea cf       	rjmp	.-44     	; 0x276 <.L17>
+
+000002a2 <_exit>:
+L0^A():
 /private/tmp/s-jKYmLdou/avr-gccA14-20261009-25746-eks7k9/gcc-14.3.0/build/avr/avr25/libgcc/../../../../libgcc/config/avr/lib1funcs.S:2279
- 98a:	f8 94       	cli
+ 2a2:	f8 94       	cli
 
-0000098c <__stop_program>:
+000002a4 <__stop_program>:
 __stop_program():
 /private/tmp/s-jKYmLdou/avr-gccA14-20261009-25746-eks7k9/gcc-14.3.0/build/avr/avr25/libgcc/../../../../libgcc/config/avr/lib1funcs.S:2281
- 98c:	ff cf       	rjmp	.-2      	; 0x98c <__stop_program>
+ 2a4:	ff cf       	rjmp	.-2      	; 0x2a4 <__stop_program>
